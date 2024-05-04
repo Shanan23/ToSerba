@@ -4,12 +4,17 @@ import android.content.Context
 import androidx.room.Database
 import androidx.room.Room
 import androidx.room.RoomDatabase
-import com.example.buynow.data.local.room.Card.CardDao
-import com.example.buynow.data.local.room.Card.CardEntity
+import com.example.buynow.data.local.room.card.CardDao
+import com.example.buynow.data.local.room.card.CardEntity
+import com.example.buynow.data.local.room.cart.ProductDao
+import com.example.buynow.data.local.room.cart.ProductEntity
+import com.example.buynow.data.local.room.item.ItemDao
+import com.example.buynow.data.local.room.item.ItemEntity
 
-@Database(entities = [ProductEntity::class, CardEntity::class], version = 1,exportSchema = false)
+@Database(entities = [ProductEntity::class, CardEntity::class, ItemEntity::class], version = 1,exportSchema = false)
 abstract class AppDatabase:RoomDatabase() {
 
+    abstract fun itemDao(): ItemDao
     abstract fun productDao(): ProductDao
     abstract fun cardDao(): CardDao
 

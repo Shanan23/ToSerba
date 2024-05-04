@@ -8,6 +8,7 @@ data class Product (
     val productRating: Float = 0.0F,
     val productDisCount:String = "",
     val productHave:Boolean = false,
+    val productFav:Boolean = false,
     val productBrand:String = "",
     val productImage:String = "",
     val productCategory:String = "",

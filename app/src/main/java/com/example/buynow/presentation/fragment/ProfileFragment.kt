@@ -18,7 +18,7 @@ import com.example.buynow.R
 
 
 import com.example.buynow.utils.FirebaseUtils.storageReference
-import com.example.buynow.data.local.room.Card.CardViewModel
+import com.example.buynow.data.local.room.card.CardViewModel
 import com.example.buynow.presentation.activity.PaymentMethodActivity
 import com.example.buynow.presentation.activity.SettingsActivity
 import com.example.buynow.presentation.activity.ShipingAddressActivity

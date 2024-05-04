@@ -23,6 +23,7 @@ import com.example.buynow.data.model.Product
 
 import com.example.buynow.R
 import com.example.buynow.presentation.activity.VisualSearchActivity
+import com.example.buynow.utils.StringUtils
 import com.google.gson.Gson
 import com.google.gson.reflect.TypeToken
 import java.io.IOException
@@ -32,7 +33,7 @@ class HomeFragment : Fragment() {
 
 //    NewProducts.json
 
-    lateinit var coverRecView:RecyclerView
+//    lateinit var coverRecView:RecyclerView
     lateinit var newRecView:RecyclerView
     lateinit var saleRecView:RecyclerView
     lateinit var coverProduct:ArrayList<Product>
@@ -59,14 +60,12 @@ class HomeFragment : Fragment() {
 
         activity?.window?.addFlags(WindowManager.LayoutParams.FLAG_LAYOUT_NO_LIMITS)
 
-
-
         coverProduct = arrayListOf()
         newProduct = arrayListOf()
         saleProduct = arrayListOf()
 
 
-        coverRecView = view.findViewById(R.id.coverRecView)
+//        coverRecView = view.findViewById(R.id.coverRecView)
         newRecView = view.findViewById(R.id.newRecView)
         saleRecView = view.findViewById(R.id.saleRecView)
         newLayout = view.findViewById(R.id.newLayout)
@@ -82,13 +81,6 @@ class HomeFragment : Fragment() {
         setCoverData()
         setNewProductData()
 
-        coverRecView.layoutManager = LinearLayoutManager(context,LinearLayoutManager.HORIZONTAL, false)
-        coverRecView.setHasFixedSize(true)
-        coverProductAdapter = CoverProductAdapter(activity as Context, coverProduct )
-        coverRecView.adapter = coverProductAdapter
-
-
-
         newRecView.layoutManager = LinearLayoutManager(context,LinearLayoutManager.HORIZONTAL, false)
         newRecView.setHasFixedSize(true)
         newProductAdapter = ProductAdapter(newProduct, activity as Context )
@@ -100,19 +92,11 @@ class HomeFragment : Fragment() {
         saleProductAdapter = SaleProductAdapter(saleProduct, activity as Context )
         saleRecView.adapter = saleProductAdapter
 
-
-
         visualSearchBtn_homePage.setOnClickListener {
             startActivity(Intent(context, VisualSearchActivity::class.java))
         }
 
-
-
-
-
         showLayout()
-
-
 
         return view
     }
@@ -122,7 +106,6 @@ class HomeFragment : Fragment() {
     private fun hideLayout(){
         animationView.playAnimation()
         animationView.loop(true)
-        coverRecView.visibility = View.GONE
         newLayout.visibility = View.GONE
         saleLayout.visibility = View.GONE
         animationView.visibility = View.VISIBLE
@@ -130,28 +113,15 @@ class HomeFragment : Fragment() {
     private fun showLayout(){
         animationView.pauseAnimation()
         animationView.visibility = View.GONE
-        coverRecView.visibility = View.VISIBLE
         newLayout.visibility = View.VISIBLE
         saleLayout.visibility = View.VISIBLE
-    }
-
-    fun getJsonData(context: Context, fileName: String): String? {
-
-        val jsonString: String
-        try {
-            jsonString = context.assets.open(fileName).bufferedReader().use { it.readText() }
-        } catch (ioException: IOException) {
-            ioException.printStackTrace()
-            return null
-        }
-        return jsonString
     }
 
     private fun setCoverData() {
 
         val jsonFileString = context?.let {
 
-            getJsonData(it, "CoverProducts.json")
+            StringUtils.getJsonData(it, "CoverProducts.json")
         }
         val gson = Gson()
 
@@ -165,15 +135,13 @@ class HomeFragment : Fragment() {
             saleProduct.add(person)
 
         }
-
-
     }
 
     private fun setNewProductData() {
 
         val jsonFileString = context?.let {
 
-            getJsonData(it, "NewProducts.json")
+            StringUtils.getJsonData(it, "NewProducts.json")
         }
         val gson = Gson()
 

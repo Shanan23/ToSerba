@@ -19,8 +19,8 @@ import com.example.buynow.data.model.Product
 import com.example.buynow.utils.DefaultCard.GetDefCard
 import com.example.buynow.utils.Extensions.cardXXGen
 import com.example.buynow.utils.Extensions.toast
-import com.example.buynow.data.local.room.CartViewModel
-import com.example.buynow.data.local.room.ProductEntity
+import com.example.buynow.data.local.room.cart.CartViewModel
+import com.example.buynow.data.local.room.cart.ProductEntity
 import com.google.android.material.bottomsheet.BottomSheetDialog
 import com.google.gson.Gson
 import com.google.gson.reflect.TypeToken
@@ -202,7 +202,7 @@ class ProductDetailsActivity : AppCompatActivity() {
             .into(productImage_ProductDetailsPage)
 
         productName_ProductDetailsPage.text = coverD[productIndex].productName
-        productPrice_ProductDetailsPage.text = "$" + coverD[productIndex].productPrice
+        productPrice_ProductDetailsPage.text = "Rp " + coverD[productIndex].productPrice
         productBrand_ProductDetailsPage.text = coverD[productIndex].productBrand
         productDes_ProductDetailsPage.text = coverD[productIndex].productDes
         productRating_singleProduct.rating = coverD[productIndex].productRating

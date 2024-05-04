@@ -7,7 +7,7 @@ import android.view.ViewGroup
 import android.widget.*
 import androidx.recyclerview.widget.RecyclerView
 import com.example.buynow.R
-import com.example.buynow.data.local.room.Card.CardEntity
+import com.example.buynow.data.local.room.card.CardEntity
 
 class CardAdapter(private val ctx: Context, val listener: CarDItemClickAdapter) :RecyclerView.Adapter<CardAdapter.cardViewHolder>() {
 

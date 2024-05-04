@@ -12,8 +12,8 @@ import androidx.recyclerview.widget.RecyclerView
 import com.example.buynow.presentation.adapter.CarDItemClickAdapter
 import com.example.buynow.presentation.adapter.CardAdapter
 import com.example.buynow.R
-import com.example.buynow.data.local.room.Card.CardEntity
-import com.example.buynow.data.local.room.Card.CardViewModel
+import com.example.buynow.data.local.room.card.CardEntity
+import com.example.buynow.data.local.room.card.CardViewModel
 import com.example.buynow.databinding.CardAddBottomSheetBinding
 import com.google.android.material.bottomsheet.BottomSheetDialog
 import com.google.android.material.floatingactionbutton.FloatingActionButton

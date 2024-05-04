@@ -28,10 +28,11 @@ class ProductAdapter(private val productList: ArrayList<Product>, context: Conte
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
 
         val product: Product = productList[position]
-        holder.productBrandName_singleProduct.text = product.productBrand
+        holder.productBrandName_singleProduct.text = product.productCategory
         holder.productName_singleProduct.text = product.productName
-        holder.productPrice_singleProduct.text = "$"+product.productPrice
+        holder.productPrice_singleProduct.text = "Rp "+product.productPrice
         holder.productRating_singleProduct.rating = product.productRating
+        holder.lblRating.text = product.productRating.toString()
 
         Glide.with(ctx)
             .load(product.productImage)
@@ -66,6 +67,7 @@ class ProductAdapter(private val productList: ArrayList<Product>, context: Conte
         val productImage_singleProduct:ImageView = itemView.findViewById(R.id.productImage_singleProduct)
         val productAddToFav_singleProduct:ImageView = itemView.findViewById(R.id.productAddToFav_singleProduct)
         val productRating_singleProduct:RatingBar = itemView.findViewById(R.id.productRating_singleProduct)
+        val lblRating:TextView = itemView.findViewById(R.id.lblRating)
         val productBrandName_singleProduct:TextView = itemView.findViewById(R.id.productBrandName_singleProduct)
         val discountTv_singleProduct:TextView = itemView.findViewById(R.id.discountTv_singleProduct)
         val productName_singleProduct:TextView = itemView.findViewById(R.id.productName_singleProduct)

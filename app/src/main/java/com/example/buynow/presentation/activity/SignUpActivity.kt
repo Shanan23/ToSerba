@@ -224,7 +224,6 @@ class SignUpActivity : AppCompatActivity() {
 
         signIn()
 
-
     }
 
 

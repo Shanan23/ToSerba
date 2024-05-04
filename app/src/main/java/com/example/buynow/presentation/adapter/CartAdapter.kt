@@ -9,7 +9,7 @@ import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import com.example.buynow.R
-import com.example.buynow.data.local.room.ProductEntity
+import com.example.buynow.data.local.room.cart.ProductEntity
 
 class CartAdapter(private val ctx: Context, val listener: CartItemClickAdapter):RecyclerView.Adapter<CartAdapter.CartViewHolder>() {
 
@@ -27,7 +27,7 @@ class CartAdapter(private val ctx: Context, val listener: CartItemClickAdapter):
         val cartItem: ProductEntity = cartList[position]
 
         holder.cartName.text = cartItem.name
-        holder.cartPrice.text = "$"+ cartItem.price
+        holder.cartPrice.text = "Rp "+ cartItem.price
         holder.quantityTvCart.text = cartItem.qua.toString()
         holder.cartMore.setOnClickListener {
 

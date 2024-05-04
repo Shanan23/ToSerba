@@ -24,8 +24,8 @@ import com.example.buynow.presentation.adapter.CartItemClickAdapter
 import com.example.buynow.R
 
 
-import com.example.buynow.data.local.room.CartViewModel
-import com.example.buynow.data.local.room.ProductEntity
+import com.example.buynow.data.local.room.cart.CartViewModel
+import com.example.buynow.data.local.room.cart.ProductEntity
 
 class BagFragment : Fragment(), CartItemClickAdapter {
 
@@ -94,7 +94,7 @@ class BagFragment : Fragment(), CartItemClickAdapter {
             Item.forEach {
                 sum += it.price
             }
-            totalPriceBagFrag.text = "$" + sum
+            totalPriceBagFrag.text = "Rp " + sum
         })
 
 

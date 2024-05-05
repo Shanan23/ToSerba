@@ -210,7 +210,7 @@ class ProductDetailsActivity : AppCompatActivity() {
 
         pName = coverD[productIndex].productName
         pPrice = coverD[productIndex].productPrice.toInt()
-        pPid = coverD[productIndex].productId
+        pPid = coverD[productIndex].productId.toString()
         pImage = coverD[productIndex].productImage
 
     }

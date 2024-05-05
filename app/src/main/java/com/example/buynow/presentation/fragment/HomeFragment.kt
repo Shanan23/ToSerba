@@ -24,8 +24,12 @@ import com.example.buynow.data.model.Product
 import com.example.buynow.R
 import com.example.buynow.presentation.activity.VisualSearchActivity
 import com.example.buynow.utils.StringUtils
+import com.google.firebase.auth.FirebaseAuth
+import com.google.firebase.firestore.ktx.firestore
+import com.google.firebase.ktx.Firebase
 import com.google.gson.Gson
 import com.google.gson.reflect.TypeToken
+import kotlinx.coroutines.tasks.await
 import java.io.IOException
 
 
@@ -45,6 +49,8 @@ class HomeFragment : Fragment() {
     lateinit var saleProductAdapter: SaleProductAdapter
 
     lateinit var animationView: LottieAnimationView
+    private val itemCollectionRef = Firebase.firestore.collection("Items")
+    val firebaseAuth: FirebaseAuth = FirebaseAuth.getInstance()
 
     lateinit var newLayout:LinearLayout
     lateinit var saleLayout:LinearLayout
@@ -78,8 +84,7 @@ class HomeFragment : Fragment() {
 
         hideLayout()
 
-        setCoverData()
-        setNewProductData()
+//        getItems()
 
         newRecView.layoutManager = LinearLayoutManager(context,LinearLayoutManager.HORIZONTAL, false)
         newRecView.setHasFixedSize(true)
@@ -101,6 +106,10 @@ class HomeFragment : Fragment() {
         return view
     }
 
+    private suspend fun getItems() {
+        val querySnapshot = itemCollectionRef
+            .get().await()
+    }
 
 
     private fun hideLayout(){
@@ -117,48 +126,48 @@ class HomeFragment : Fragment() {
         saleLayout.visibility = View.VISIBLE
     }
 
-    private fun setCoverData() {
-
-        val jsonFileString = context?.let {
-
-            StringUtils.getJsonData(it, "CoverProducts.json")
-        }
-        val gson = Gson()
-
-        val listCoverType = object : TypeToken<List<Product>>() {}.type
-
-        var coverD: List<Product> = gson.fromJson(jsonFileString, listCoverType)
-
-        coverD.forEachIndexed { idx, person ->
-
-            coverProduct.add(person)
-            saleProduct.add(person)
-
-        }
-    }
-
-    private fun setNewProductData() {
-
-        val jsonFileString = context?.let {
-
-            StringUtils.getJsonData(it, "NewProducts.json")
-        }
-        val gson = Gson()
-
-        val listCoverType = object : TypeToken<List<Product>>() {}.type
-
-        var coverD: List<Product> = gson.fromJson(jsonFileString, listCoverType)
-
-        coverD.forEachIndexed { idx, person ->
-
-
-            newProduct.add(person)
-
-
-        }
-
-
-    }
+//    private fun setCoverData() {
+//
+//        val jsonFileString = context?.let {
+//
+//            StringUtils.getJsonData(it, "CoverProducts.json")
+//        }
+//        val gson = Gson()
+//
+//        val listCoverType = object : TypeToken<List<Product>>() {}.type
+//
+//        var coverD: List<Product> = gson.fromJson(jsonFileString, listCoverType)
+//
+//        coverD.forEachIndexed { idx, person ->
+//
+//            coverProduct.add(person)
+//            saleProduct.add(person)
+//
+//        }
+//    }
+//
+//    private fun setNewProductData() {
+//
+//        val jsonFileString = context?.let {
+//
+//            StringUtils.getJsonData(it, "NewProducts.json")
+//        }
+//        val gson = Gson()
+//
+//        val listCoverType = object : TypeToken<List<Product>>() {}.type
+//
+//        var coverD: List<Product> = gson.fromJson(jsonFileString, listCoverType)
+//
+//        coverD.forEachIndexed { idx, person ->
+//
+//
+//            newProduct.add(person)
+//
+//
+//        }
+//
+//
+//    }
 
 }
 

@@ -275,28 +275,6 @@ class SignUpActivity : AppCompatActivity() {
             }
         }
     }
-
-//    private fun sendEmailVerification() {
-//        progressDialog.setMessage("Send Verification")
-//        firebaseUser?.let {
-//            it.sendEmailVerification().addOnCompleteListener { task ->
-//                if (task.isSuccessful) {
-//                    progressDialog.dismiss()
-//                    val intent = Intent(this, EmailVerifyActivity::class.java)
-//                    intent.putExtra("EmailAddress", emailEt.text.toString().trim())
-//                    intent.putExtra("loginPassword", passEt.text.toString().trim())
-//                    startActivity(intent)
-//                    finish()
-//                }
-//            }
-//                .addOnFailureListener {
-//                    progressDialog.dismiss()
-//                    toast("Verification Link Send failed")
-//                }
-//        }
-//    }
-
-
 }
 
 

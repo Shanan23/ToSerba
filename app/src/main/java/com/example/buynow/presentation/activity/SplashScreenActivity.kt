@@ -3,10 +3,13 @@ package com.example.buynow.presentation.activity
 import android.annotation.SuppressLint
 import android.content.Intent
 import android.os.Bundle
-import android.os.Handler
+import android.util.Log
 import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.app.AppCompatDelegate
+import androidx.lifecycle.ViewModelProviders
 import com.example.buynow.R
+import com.example.buynow.data.local.room.item.ItemEntity
+import com.example.buynow.data.local.room.item.ItemViewModel
 import com.example.buynow.data.model.Product
 import com.example.buynow.utils.FirebaseUtils
 import com.example.buynow.utils.StringUtils
@@ -23,6 +26,7 @@ import kotlinx.coroutines.tasks.await
 @SuppressLint("CustomSplashScreen")
 class SplashScreenActivity : AppCompatActivity() {
 
+    private lateinit var itemViewModel: ItemViewModel
     private val itemCollectionRef = Firebase.firestore.collection("Items")
     val firebaseAuth: FirebaseAuth = FirebaseAuth.getInstance()
 
@@ -36,13 +40,11 @@ class SplashScreenActivity : AppCompatActivity() {
 
         AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_FOLLOW_SYSTEM)
 
-        Handler().postDelayed({
-
-            CoroutineScope(Dispatchers.IO).launch { syncItem() }
-
-            checkUser()
-
-        }, 1000)
+        coverProduct = arrayListOf()
+        newProduct = arrayListOf()
+        saleProduct = arrayListOf()
+        itemViewModel = ViewModelProviders.of(this).get(ItemViewModel::class.java)
+        CoroutineScope(Dispatchers.IO).launch { syncItem() }
 
     }
 
@@ -69,8 +71,8 @@ class SplashScreenActivity : AppCompatActivity() {
 
     private suspend fun syncItem() {
         if (firebaseAuth.uid != null) {
-            setCoverData()
             setNewProductData()
+            setCoverData()
         }
 
     }
@@ -87,16 +89,40 @@ class SplashScreenActivity : AppCompatActivity() {
 
         var coverD: List<Product> = gson.fromJson(jsonFileString, listCoverType)
 
-        coverD.forEachIndexed { idx, person ->
+        coverD.forEach { person ->
 
             coverProduct.add(person)
             saleProduct.add(person)
-            itemCollectionRef.document(firebaseAuth.uid.toString()).set(saleProduct).await()
+
+            var itemEntity = ItemEntity(
+                person.productId.toString(),
+                person.productUserId,
+                person.productName,
+                person.productPrice.toInt(),
+                person.productImage,
+                person.productDes,
+                person.productRating.toDouble(),
+                person.productDisCount,
+                1,
+                false,
+                person.productBrand,
+                person.productCategory,
+                person.productNote
+
+            )
+
+            Log.d("SQL Query: ", itemEntity.toString())
+
+            itemViewModel.insertItem(itemEntity)
+
+            itemCollectionRef.document(person.productId.toString()).set(person).await()
 
         }
+
+        checkUser()
     }
 
-    private fun setNewProductData() {
+    private suspend fun setNewProductData() {
 
         val jsonFileString = applicationContext?.let {
 
@@ -113,9 +139,27 @@ class SplashScreenActivity : AppCompatActivity() {
 
             newProduct.add(person)
 
+            var itemEntity = ItemEntity(
+                person.productId.toString(),
+                person.productUserId,
+                person.productName,
+                person.productPrice.toInt(),
+                person.productImage,
+                person.productDes,
+                person.productRating.toDouble(),
+                person.productDisCount,
+                1,
+                false,
+                person.productBrand,
+                person.productCategory,
+                person.productNote
+            )
 
+            Log.d("SQL Query: ", itemEntity.toString())
+
+            itemViewModel.insertItem(itemEntity)
+
+            itemCollectionRef.document(person.productId.toString()).set(person).await()
         }
-
-
     }
 }

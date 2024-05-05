@@ -10,6 +10,7 @@ import com.example.buynow.data.local.room.cart.ProductDao
 import com.example.buynow.data.local.room.cart.ProductEntity
 import com.example.buynow.data.local.room.item.ItemDao
 import com.example.buynow.data.local.room.item.ItemEntity
+import java.util.concurrent.Executors
 
 @Database(entities = [ProductEntity::class, CardEntity::class, ItemEntity::class], version = 1,exportSchema = false)
 abstract class AppDatabase:RoomDatabase() {
@@ -29,12 +30,17 @@ abstract class AppDatabase:RoomDatabase() {
             }
 
             synchronized(AppDatabase::class) {
-                val instance = Room.databaseBuilder(
+                val dbBuilder = Room.databaseBuilder(
                     context.applicationContext,
                     AppDatabase::class.java,
                     "app_database"
-                ).build()
-
+                )
+                dbBuilder.setQueryCallback(object : QueryCallback {
+                    override fun onQuery(sqlQuery: String, bindArgs: List<Any?>) {
+                        println("SQL Query: $sqlQuery SQL Args: $bindArgs")
+                    }
+                }, Executors.newSingleThreadExecutor())
+                val instance =  dbBuilder.build()
                 INSTANCE = instance
                 return instance
             }

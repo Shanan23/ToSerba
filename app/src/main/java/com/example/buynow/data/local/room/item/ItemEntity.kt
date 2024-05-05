@@ -5,6 +5,7 @@ import androidx.room.Entity
 import androidx.room.PrimaryKey
 @Entity(tableName = "items")
 data class ItemEntity(
+    @PrimaryKey(autoGenerate = false)
     @ColumnInfo(name = "Item_ID") var pId: String,
     @ColumnInfo(name = "Item_User_ID") var pUId: String,
     @ColumnInfo(name = "Item_Name") var name: String,
@@ -18,8 +19,6 @@ data class ItemEntity(
     @ColumnInfo(name = "Item_Brand") var brand: String,
     @ColumnInfo(name = "Item_Category") var category: String,
     @ColumnInfo(name = "Item_Note") var note: String,
-
     ) {
-    @PrimaryKey(autoGenerate = true)
     var id: Int = 0
 }

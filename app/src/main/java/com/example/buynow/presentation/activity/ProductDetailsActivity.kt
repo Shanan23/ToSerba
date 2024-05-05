@@ -2,25 +2,32 @@ package com.example.buynow.presentation.activity
 
 import android.content.Context
 import android.content.Intent
-import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.WindowManager
-import android.widget.*
+import android.widget.Button
+import android.widget.EditText
+import android.widget.ImageView
+import android.widget.LinearLayout
+import android.widget.RatingBar
+import android.widget.TextView
+import androidx.appcompat.app.AppCompatActivity
 import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.lifecycle.ViewModelProviders
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
-import com.example.buynow.presentation.adapter.ProductAdapter
 import com.example.buynow.R
+import com.example.buynow.data.local.room.cart.CartViewModel
+import com.example.buynow.data.local.room.cart.ProductEntity
+import com.example.buynow.data.local.room.item.ItemEntity
+import com.example.buynow.data.model.Item
 import com.example.buynow.data.model.Product
+import com.example.buynow.presentation.adapter.ProductAdapter
 import com.example.buynow.utils.DefaultCard.GetDefCard
 import com.example.buynow.utils.Extensions.cardXXGen
 import com.example.buynow.utils.Extensions.toast
-import com.example.buynow.data.local.room.cart.CartViewModel
-import com.example.buynow.data.local.room.cart.ProductEntity
 import com.google.android.material.bottomsheet.BottomSheetDialog
 import com.google.gson.Gson
 import com.google.gson.reflect.TypeToken
@@ -42,10 +49,9 @@ class ProductDetailsActivity : AppCompatActivity() {
     lateinit var productRating_singleProduct: RatingBar
 
 
-
     lateinit var RecomRecView_ProductDetailsPage: RecyclerView
     lateinit var newProductAdapter: ProductAdapter
-    lateinit var newProduct: ArrayList<Product>
+    lateinit var newProduct: ArrayList<ItemEntity>
 
     lateinit var pName: String
     var qua: Int = 1
@@ -76,15 +82,15 @@ class ProductDetailsActivity : AppCompatActivity() {
         RecomRecView_ProductDetailsPage = findViewById(R.id.RecomRecView_ProductDetailsPage)
         backIv_ProfileFrag = findViewById(R.id.backIv_ProfileFrag)
         val addToCart_ProductDetailsPage: Button = findViewById(R.id.addToCart_ProductDetailsPage)
-        val shippingAddress_productDetailsPage:LinearLayout = findViewById(R.id.shippingAddress_productDetailsPage)
-        val cardNumberProduct_Details:TextView = findViewById(R.id.cardNumberProduct_Details)
+        val shippingAddress_productDetailsPage: LinearLayout =
+            findViewById(R.id.shippingAddress_productDetailsPage)
+        val cardNumberProduct_Details: TextView = findViewById(R.id.cardNumberProduct_Details)
 
         cardNumber = GetDefCard()
 
-        if(cardNumber == "" || cardNumber == null){
+        if (cardNumber == "" || cardNumber == null) {
             cardNumberProduct_Details.text = "You Have No Cards"
-        }
-        else{
+        } else {
             cardNumberProduct_Details.text = cardXXGen(cardNumber)
         }
 
@@ -96,7 +102,6 @@ class ProductDetailsActivity : AppCompatActivity() {
 
         newProduct = arrayListOf()
         setProductData()
-        setRecData()
 
         RecomRecView_ProductDetailsPage.layoutManager = LinearLayoutManager(
             this,
@@ -130,18 +135,22 @@ class ProductDetailsActivity : AppCompatActivity() {
             }
 
             bottomSheetView.findViewById<LinearLayout>(R.id.minusLayout).setOnClickListener {
-                if(bottomSheetView.findViewById<EditText>(R.id.quantityEtBottom).text.toString()
-                        .toInt() > 1){
+                if (bottomSheetView.findViewById<EditText>(R.id.quantityEtBottom).text.toString()
+                        .toInt() > 1
+                ) {
                     qua--
-                    bottomSheetView.findViewById<EditText>(R.id.quantityEtBottom).setText(qua.toString())
+                    bottomSheetView.findViewById<EditText>(R.id.quantityEtBottom)
+                        .setText(qua.toString())
                 }
             }
 
             bottomSheetView.findViewById<LinearLayout>(R.id.plusLayout).setOnClickListener {
-                if(bottomSheetView.findViewById<EditText>(R.id.quantityEtBottom).text.toString()
-                        .toInt() < 10){
+                if (bottomSheetView.findViewById<EditText>(R.id.quantityEtBottom).text.toString()
+                        .toInt() < 10
+                ) {
                     qua++
-                    bottomSheetView.findViewById<EditText>(R.id.quantityEtBottom).setText(qua.toString())
+                    bottomSheetView.findViewById<EditText>(R.id.quantityEtBottom)
+                        .setText(qua.toString())
                 }
             }
 
@@ -206,47 +215,13 @@ class ProductDetailsActivity : AppCompatActivity() {
         productBrand_ProductDetailsPage.text = coverD[productIndex].productBrand
         productDes_ProductDetailsPage.text = coverD[productIndex].productDes
         productRating_singleProduct.rating = coverD[productIndex].productRating
-        RatingProductDetails.text = coverD[productIndex].productRating.toString() + " Rating on this Product."
+        RatingProductDetails.text =
+            coverD[productIndex].productRating.toString() + " Rating on this Product."
 
         pName = coverD[productIndex].productName
         pPrice = coverD[productIndex].productPrice.toInt()
         pPid = coverD[productIndex].productId.toString()
         pImage = coverD[productIndex].productImage
-
-    }
-
-    private fun setRecData() {
-
-
-        var fileJson: String = ""
-
-        if (ProductFrom.equals("Cover")) {
-            fileJson = "NewProducts.json"
-        }
-        if (ProductFrom.equals("New")) {
-            fileJson = "CoverProducts.json"
-        }
-
-
-        val jsonFileString = this.let {
-
-            getJsonData(it, fileJson)
-        }
-        val gson = Gson()
-
-        val listCoverType = object : TypeToken<List<Product>>() {}.type
-
-        var coverD: List<Product> = gson.fromJson(jsonFileString, listCoverType)
-
-        coverD.forEachIndexed { idx, person ->
-
-            if (idx < 9) {
-                newProduct.add(person)
-            }
-
-
-        }
-
 
     }
 

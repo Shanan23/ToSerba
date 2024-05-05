@@ -29,7 +29,7 @@ class SaleProductAdapter(private val saleProductList: ArrayList<Product>, contex
         holder.productName_singleProduct.text = product.productName
         holder.productPrice_singleProduct.text = "Rp "+ product.productPrice
         holder.productRating_singleProduct.rating = product.productRating
-        holder.lblRating.text = product.productRating.toString()
+        holder.lblRating.text = (Math.round(product.productRating * 100.0) / 100.0).toString()
 
         Glide.with(ctx)
             .load(product.productImage)

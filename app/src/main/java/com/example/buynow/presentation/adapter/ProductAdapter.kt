@@ -38,7 +38,7 @@ class ProductAdapter(private val productList: ArrayList<ItemEntity>, context: Co
         holder.productPrice_singleProduct.text =
             "Rp " + decimalFormat.format(product.price)
         holder.productRating_singleProduct.rating = product.rating.toFloat()
-        holder.lblRating.text = (Math.round(product.rating * 100.0) / 100.0).toString()
+        holder.lblRating.text = product.rating.toString()
 
         Glide.with(ctx)
             .load(product.image)

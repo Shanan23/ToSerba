@@ -232,7 +232,7 @@ class ProfileFragment : Fragment() {
             }
         }else{
 
-            Toast.makeText(context, "Please Upload an Image", Toast.LENGTH_SHORT).show()
+            Toast.makeText(requireContext(), "Please Upload an Image", Toast.LENGTH_SHORT).show()
         }
     }
 
@@ -263,12 +263,12 @@ class ProfileFragment : Fragment() {
                 .update("userImage" , uri ).await()
 
             withContext(Dispatchers.Main){
-                Toast.makeText(context, "Saved", Toast.LENGTH_SHORT).show()
+                Toast.makeText(requireContext(), "Saved", Toast.LENGTH_SHORT).show()
             }
 
         }catch (e:Exception){
             withContext(Dispatchers.Main){
-                Toast.makeText(context, ""+e.message.toString(), Toast.LENGTH_SHORT).show()
+                Toast.makeText(requireContext(), ""+e.message.toString(), Toast.LENGTH_SHORT).show()
             }
         }
     }

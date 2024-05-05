@@ -27,10 +27,11 @@
     </style>
 
     <style name="BottomNavigationViewStyle" parent="Widget.MaterialComponents.BottomNavigationView.Colored">
-        <item name="android:background">@color/primary</item>
+        <item name="android:background">@drawable/menu_bg</item>
         <item name="itemTextColor">@color/white</item>
         <item name="itemIconTint">@color/white</item>
     </style>
+
     <style name="RatingBar" parent="Theme.AppCompat">
         <item name="android:colorControlNormal">@color/textAd</item>
         <item name="android:colorControlActivated">@color/rating</item>

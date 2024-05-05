@@ -25,7 +25,6 @@ class ProductAdapter(private val productList: ArrayList<ItemEntity>, context: Co
     var decimalFormat = DecimalFormat("#,###.##")
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
-
         val productView =
             LayoutInflater.from(parent.context).inflate(R.layout.single_product, parent, false)
         return ViewHolder(productView)
@@ -65,7 +64,6 @@ class ProductAdapter(private val productList: ArrayList<ItemEntity>, context: Co
     }
 
     class ViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
-
         val productImage_singleProduct: ImageView =
             itemView.findViewById(R.id.productImage_singleProduct)
         val productAddToFav_singleProduct: ImageView =
@@ -83,8 +81,6 @@ class ProductAdapter(private val productList: ArrayList<ItemEntity>, context: Co
             itemView.findViewById(R.id.productPrice_singleProduct)
         val discount_singleProduct =
             itemView.findViewById<LinearLayout>(R.id.discount_singleProduct)
-
-
     }
 
     private fun goDetailsPage(position: Int) {

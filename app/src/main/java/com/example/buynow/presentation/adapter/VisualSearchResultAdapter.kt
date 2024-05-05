@@ -30,7 +30,7 @@ class VisualSearchResultAdapter(private val productList: ArrayList<Product>, con
         holder.productName_singleProduct.text = product.productName
         holder.productPrice_singleProduct.text = "Rp "+product.productPrice
         holder.productRating_singleProduct.rating = product.productRating
-        holder.lblRating.text = (Math.round(product.productRating * 100.0) / 100.0).toString()
+        holder.lblRating.text = String.format("%.1f", (product.productRating))
 
         Glide.with(ctx)
             .load(product.productImage)

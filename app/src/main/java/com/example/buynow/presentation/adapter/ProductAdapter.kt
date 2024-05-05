@@ -38,7 +38,7 @@ class ProductAdapter(private val productList: ArrayList<ItemEntity>, context: Co
         holder.productPrice_singleProduct.text =
             "Rp " + decimalFormat.format(product.price)
         holder.productRating_singleProduct.rating = product.rating.toFloat()
-        holder.lblRating.text = product.rating.toString()
+        holder.lblRating.text = String.format("%.1f", (product.rating))
 
         Glide.with(ctx)
             .load(product.image)
@@ -54,7 +54,7 @@ class ProductAdapter(private val productList: ArrayList<ItemEntity>, context: Co
         }
 
         holder.itemView.setOnClickListener {
-            goDetailsPage(position)
+            goDetailsPage(product.pId.toInt())
         }
 
     }
@@ -85,8 +85,7 @@ class ProductAdapter(private val productList: ArrayList<ItemEntity>, context: Co
 
     private fun goDetailsPage(position: Int) {
         val intent = Intent(ctx, ProductDetailsActivity::class.java)
-        intent.putExtra("ProductIndex", position)
-        intent.putExtra("ProductFrom", "New")
+        intent.putExtra("ProductID", position)
         ctx.startActivity(intent)
     }
 

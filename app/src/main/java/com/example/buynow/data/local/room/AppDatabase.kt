@@ -8,13 +8,20 @@ import com.example.buynow.data.local.room.card.CardDao
 import com.example.buynow.data.local.room.card.CardEntity
 import com.example.buynow.data.local.room.cart.ProductDao
 import com.example.buynow.data.local.room.cart.ProductEntity
+import com.example.buynow.data.local.room.category.CategoryDao
+import com.example.buynow.data.local.room.category.CategoryEntity
 import com.example.buynow.data.local.room.item.ItemDao
 import com.example.buynow.data.local.room.item.ItemEntity
 import java.util.concurrent.Executors
 
-@Database(entities = [ProductEntity::class, CardEntity::class, ItemEntity::class], version = 1,exportSchema = false)
+@Database(
+    entities = [ProductEntity::class, CardEntity::class, ItemEntity::class, CategoryEntity::class],
+    version = 1,
+    exportSchema = false
+)
 abstract class AppDatabase:RoomDatabase() {
 
+    abstract fun categoryDao(): CategoryDao
     abstract fun itemDao(): ItemDao
     abstract fun productDao(): ProductDao
     abstract fun cardDao(): CardDao

@@ -1,4 +1,4 @@
-package com.example.buynow.data.local.room.item
+package com.example.buynow.data.local.room.category
 
 import android.app.Application
 import androidx.lifecycle.AndroidViewModel
@@ -10,24 +10,24 @@ import kotlinx.coroutines.launch
 
 class CategoryViewModel(application: Application) : AndroidViewModel(application) {
 
-    private val repository: ItemRepo
-    val allItems: LiveData<List<ItemEntity>>
+    private val repository: CategoryRepo
+    val allItems: LiveData<List<CategoryEntity>>
 
     init {
-        val itemDao = AppDatabase.getInstance(application).itemDao()
-        repository = ItemRepo(itemDao)
+        val categoryDao = AppDatabase.getInstance(application).categoryDao()
+        repository = CategoryRepo(categoryDao)
         allItems = repository.allItems
     }
 
-    fun insertItem(item: ItemEntity) = viewModelScope.launch(Dispatchers.IO) {
+    fun insertCategory(item: CategoryEntity) = viewModelScope.launch(Dispatchers.IO) {
         repository.insert(item)
     }
 
-    fun deleteItem(item: ItemEntity) = viewModelScope.launch(Dispatchers.IO) {
+    fun deleteCategory(item: CategoryEntity) = viewModelScope.launch(Dispatchers.IO) {
         repository.delete(item)
     }
 
-    fun updateItem(item: ItemEntity) = viewModelScope.launch(Dispatchers.IO) {
+    fun updateCategory(item: CategoryEntity) = viewModelScope.launch(Dispatchers.IO) {
         repository.update(item)
     }
 }

@@ -1,22 +1,22 @@
-package com.example.buynow.data.local.room.item
+package com.example.buynow.data.local.room.category
 
 import androidx.lifecycle.LiveData
 
-class CategoryRepo(private val itemDao: ItemDao) {
+class CategoryRepo(private val categoryDao: CategoryDao) {
 
-    val allItems: LiveData<List<ItemEntity>> = itemDao.getAll()
+    val allItems: LiveData<List<CategoryEntity>> = categoryDao.getAll()
 
-    val getByUserId: LiveData<List<ItemEntity>> = itemDao.getByUserId()
+    val getByCategoryId: LiveData<CategoryEntity> = categoryDao.getByCategoryId()
 
-    suspend fun insert(product: ItemEntity) {
-        itemDao.insert(product)
+    suspend fun insert(category: CategoryEntity) {
+        categoryDao.insert(category)
     }
 
-    suspend fun delete(product: ItemEntity) {
-        itemDao.delete(product)
+    suspend fun delete(category: CategoryEntity) {
+        categoryDao.delete(category)
     }
 
-    suspend fun update(product: ItemEntity) {
-        itemDao.update(product)
+    suspend fun update(category: CategoryEntity) {
+        categoryDao.update(category)
     }
 }

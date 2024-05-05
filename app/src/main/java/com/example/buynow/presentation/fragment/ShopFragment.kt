@@ -23,8 +23,6 @@ import java.io.IOException
 
 
 class ShopFragment : Fragment() {
-
-
     private lateinit var cateList:ArrayList<Category>
     private lateinit var coverProduct:ArrayList<Product>
 

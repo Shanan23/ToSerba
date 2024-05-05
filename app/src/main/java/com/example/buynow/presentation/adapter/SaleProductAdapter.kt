@@ -29,7 +29,7 @@ class SaleProductAdapter(private val saleProductList: ArrayList<Product>, contex
         holder.productName_singleProduct.text = product.productName
         holder.productPrice_singleProduct.text = "Rp "+ product.productPrice
         holder.productRating_singleProduct.rating = product.productRating
-        holder.lblRating.text = (Math.round(product.productRating * 100.0) / 100.0).toString()
+        holder.lblRating.text = String.format("%.1f", (product.productRating))
 
         Glide.with(ctx)
             .load(product.productImage)
@@ -49,7 +49,7 @@ class SaleProductAdapter(private val saleProductList: ArrayList<Product>, contex
         }
 
         holder.itemView.setOnClickListener {
-            goDetailsPage(position)
+            goDetailsPage(product.productId)
         }
     }
 
@@ -76,10 +76,9 @@ class SaleProductAdapter(private val saleProductList: ArrayList<Product>, contex
 
     }
 
-    private fun goDetailsPage(position: Int) {
+    private fun goDetailsPage(productId: Int) {
         val intent = Intent(ctx , ProductDetailsActivity::class.java)
-        intent.putExtra("ProductIndex", position)
-        intent.putExtra("ProductFrom", "Cover")
+        intent.putExtra("ProductID", productId)
         ctx.startActivity(intent)
     }
 }

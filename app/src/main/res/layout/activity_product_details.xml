@@ -49,7 +49,7 @@
                     android:layout_width="20dp"
                     android:layout_height="20dp"
                     android:src="@drawable/ic_back"
-                    app:tint="@color/white" />
+                    app:tint="@color/whiteColored" />
 
                 <androidx.legacy.widget.Space
                     android:layout_width="wrap_content"
@@ -94,16 +94,62 @@
                         android:textColor="@color/mainText"
                         android:textSize="25sp" />
 
-                    <TextView
-                        android:id="@+id/productPrice_ProductDetailsPage"
-                        android:layout_width="0dp"
-                        android:layout_height="match_parent"
-                        android:layout_weight="1"
-                        android:fontFamily="@font/metropolis_semibold"
-                        android:gravity="end"
-                        android:text=""
-                        android:textColor="@color/mainText"
-                        android:textSize="25sp" />
+                    <LinearLayout
+                        android:id="@+id/linearLayout8"
+                        android:layout_width="wrap_content"
+                        android:layout_height="40dp"
+                        android:layout_marginTop="30dp"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toBottomOf="@+id/textView">
+
+                        <LinearLayout
+                            android:id="@+id/minusLayout"
+                            android:layout_width="35dp"
+                            android:layout_height="35dp"
+                            android:background="@drawable/circle_bg_white"
+                            android:elevation="5dp"
+                            android:orientation="horizontal">
+
+                            <ImageView
+
+                                android:layout_width="match_parent"
+                                android:layout_height="match_parent"
+                                android:padding="8dp"
+                                android:src="@drawable/ic_baseline_remove_24"
+                                app:tint="@color/colorText" />
+
+                        </LinearLayout>
+
+                        <EditText
+                            android:id="@+id/quantityEtBottom"
+                            android:layout_width="100dp"
+                            android:layout_height="35dp"
+                            android:background="@drawable/edit_text_bg"
+                            android:fontFamily="@font/metropolis_regular"
+                            android:gravity="center"
+                            android:inputType="numberDecimal"
+                            android:text="1"
+                            android:textColor="@color/colorText"
+                            android:textSize="18sp" />
+
+                        <LinearLayout
+                            android:id="@+id/plusLayout"
+                            android:layout_width="35dp"
+                            android:layout_height="35dp"
+                            android:background="@drawable/circle_bg_white"
+                            android:elevation="5dp"
+                            android:orientation="horizontal">
+
+                            <ImageView
+                                android:layout_width="match_parent"
+                                android:layout_height="match_parent"
+                                android:padding="8dp"
+                                android:src="@drawable/ic_baseline_add_24"
+                                app:tint="@color/colorText" />
+
+                        </LinearLayout>
+                    </LinearLayout>
                 </LinearLayout>
 
                 <TextView
@@ -128,8 +174,8 @@
                         style="?android:attr/ratingBarStyleSmall"
                         android:layout_width="wrap_content"
                         android:layout_height="20dp"
-                        android:numStars="1"
-                        android:rating="5"
+                        android:numStars="5"
+                        android:rating="3"
                         android:transformPivotX="0dp"
                         android:transformPivotY="15dp" />
 
@@ -140,8 +186,8 @@
                         android:fontFamily="@font/metropolis_light"
                         android:gravity="center"
                         android:text="5"
-                        android:textColor="@color/primary"
-                        android:textSize="13sp" />
+                        android:textColor="@color/mainText"
+                        android:textSize="14sp" />
                 </LinearLayout>
 
                 <TextView
@@ -334,7 +380,6 @@
         android:id="@+id/linearLayout7"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:background="@color/backgroundAd"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent">
@@ -348,7 +393,7 @@
             android:layout_marginRight="10dp"
             android:layout_marginBottom="20dp"
             android:background="@drawable/btn_bg"
-            android:text="Add To Bag" />
+            android:text="Tambah ke keranjang | " />
     </LinearLayout>
 
 </androidx.constraintlayout.widget.ConstraintLayout>

@@ -49,13 +49,6 @@ class SplashScreenActivity : AppCompatActivity() {
     }
 
     private fun checkUser() {
-        /*
-        if(FirebaseUtils.firebaseUser?.isEmailVerified == true){
-            val intent = Intent(this, HomeActivity::class.java)
-            startActivity(intent)
-            finish()
-        }
-*/
         if (FirebaseUtils.firebaseUser != null) {
             val intent = Intent(this, HomeActivity::class.java)
             startActivity(intent)
@@ -73,6 +66,9 @@ class SplashScreenActivity : AppCompatActivity() {
         if (firebaseAuth.uid != null) {
             setNewProductData()
             setCoverData()
+        } else {
+            checkUser()
+
         }
 
     }

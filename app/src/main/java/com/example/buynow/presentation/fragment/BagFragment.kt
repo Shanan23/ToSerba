@@ -65,7 +65,6 @@ class BagFragment : Fragment(), CartItemClickAdapter {
         cartAdapter = CartAdapter(activity as Context, this )
         cartRecView.adapter = cartAdapter
 
-
         cartViewModel = ViewModelProviders.of(this).get(CartViewModel::class.java)
 
         cartViewModel.allproducts.observe(viewLifecycleOwner, Observer {List ->

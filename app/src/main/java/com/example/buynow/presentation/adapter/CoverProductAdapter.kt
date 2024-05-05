@@ -35,7 +35,7 @@ class CoverProductAdapter(var ctx: Context, private val coverProductList: ArrayL
 
         holder.productCheck_coverPage.setOnClickListener {
 
-            goDetailsPage(position)
+            goDetailsPage(coverPro.productId)
 
 
         }
@@ -60,8 +60,7 @@ class CoverProductAdapter(var ctx: Context, private val coverProductList: ArrayL
 
     private fun goDetailsPage(position: Int) {
         val intent = Intent(ctx , ProductDetailsActivity::class.java)
-        intent.putExtra("ProductIndex", position)
-        intent.putExtra("ProductFrom", "Cover")
+        intent.putExtra("ProductID", position)
         ctx.startActivity(intent)
     }
 }

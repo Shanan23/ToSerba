@@ -5,7 +5,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@drawable/bg_regis"
-    tools:context=".presentation.activity.SignUpActivity">
+    tools:context=".presentation.SignUpActivity">
 
 
     <TextView

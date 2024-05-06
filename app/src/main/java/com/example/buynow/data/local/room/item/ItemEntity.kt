@@ -6,7 +6,7 @@ import androidx.room.PrimaryKey
 @Entity(tableName = "items")
 data class ItemEntity(
     @PrimaryKey(autoGenerate = false)
-    @ColumnInfo(name = "Item_ID") var pId: String,
+    @ColumnInfo(name = "Item_ID") var pId: Int,
     @ColumnInfo(name = "Item_User_ID") var pUId: String,
     @ColumnInfo(name = "Item_Name") var name: String,
     @ColumnInfo(name = "Item_Price") var price: Int,

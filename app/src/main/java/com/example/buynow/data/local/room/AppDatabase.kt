@@ -12,15 +12,18 @@ import com.example.buynow.data.local.room.category.CategoryDao
 import com.example.buynow.data.local.room.category.CategoryEntity
 import com.example.buynow.data.local.room.item.ItemDao
 import com.example.buynow.data.local.room.item.ItemEntity
+import com.example.buynow.data.local.room.sale.SaleDao
+import com.example.buynow.data.local.room.sale.SaleEntity
 import java.util.concurrent.Executors
 
 @Database(
-    entities = [ProductEntity::class, CardEntity::class, ItemEntity::class, CategoryEntity::class],
+    entities = [ProductEntity::class, CardEntity::class, ItemEntity::class, CategoryEntity::class, SaleEntity::class],
     version = 1,
     exportSchema = false
 )
 abstract class AppDatabase:RoomDatabase() {
 
+    abstract fun saleDao(): SaleDao
     abstract fun categoryDao(): CategoryDao
     abstract fun itemDao(): ItemDao
     abstract fun productDao(): ProductDao

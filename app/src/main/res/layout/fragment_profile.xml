@@ -5,7 +5,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@color/background"
-    tools:context=".presentation.fragment.ProfileFragment">
+    tools:context=".presentation.user.fragment.ProfileFragment">
 
 <!--    Top Bar-->
     <LinearLayout
@@ -222,7 +222,7 @@
         </androidx.cardview.widget.CardView>
 
         <androidx.cardview.widget.CardView
-            android:id="@+id/paymentMethod_ProfilePage"
+            android:id="@+id/adminProfilePage"
             android:layout_width="match_parent"
             android:layout_height="70dp"
             android:layout_marginTop="5dp"
@@ -249,7 +249,7 @@
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:fontFamily="@font/metropolis_regular"
-                        android:text="Payment methods"
+                        android:text="Admin"
                         android:textColor="@color/mainText"
                         android:textSize="16sp" />
 
@@ -260,7 +260,58 @@
                         android:layout_marginTop="5dp"
                         android:fontFamily="@font/metropolis_regular"
                         android:textColor="@color/textAd"
-                        android:text="You Have no cart"
+                        android:text="Admin page"
+                        android:textSize="12sp" />
+
+                </LinearLayout>
+
+                <ImageView
+                    android:layout_width="22dp"
+                    android:layout_height="match_parent"
+                    android:layout_marginLeft="10dp"
+                    android:src="@drawable/ic_baseline_keyboard_arrow_right_24" />
+            </LinearLayout>
+        </androidx.cardview.widget.CardView>
+
+        <androidx.cardview.widget.CardView
+            android:id="@+id/sellerProfilePage"
+            android:layout_width="match_parent"
+            android:layout_height="70dp"
+            android:layout_marginBottom="5dp"
+            app:cardBackgroundColor="@color/background"
+            app:cardElevation="0dp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/linearLayout3">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_marginLeft="10dp"
+                android:layout_marginRight="10dp">
+
+                <LinearLayout
+                    android:layout_width="0dp"
+                    android:layout_height="match_parent"
+                    android:layout_weight="1"
+                    android:gravity="center"
+                    android:orientation="vertical">
+
+                    <TextView
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:fontFamily="@font/metropolis_regular"
+                        android:text="Seller"
+                        android:textColor="@color/mainText"
+                        android:textSize="16sp" />
+
+                    <TextView
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="5dp"
+                        android:fontFamily="@font/metropolis_regular"
+                        android:textColor="@color/textAd"
+                        android:text="Seller Page"
                         android:textSize="12sp" />
 
                 </LinearLayout>
@@ -310,59 +361,6 @@
                         android:fontFamily="@font/metropolis_regular"
                         android:textColor="@color/textAd"
                         android:text="You have special promo codes"
-                        android:textSize="12sp" />
-
-                </LinearLayout>
-
-                <ImageView
-                    android:layout_width="22dp"
-                    android:layout_height="match_parent"
-                    android:layout_marginLeft="10dp"
-                    android:src="@drawable/ic_baseline_keyboard_arrow_right_24" />
-            </LinearLayout>
-        </androidx.cardview.widget.CardView>
-
-
-        <androidx.cardview.widget.CardView
-            android:id="@+id/settingCd_profileFrag"
-            android:layout_width="match_parent"
-            android:layout_height="70dp"
-
-            android:layout_marginBottom="5dp"
-            app:cardBackgroundColor="@color/background"
-            app:cardElevation="0dp"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/linearLayout3">
-
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:layout_marginLeft="10dp"
-                android:layout_marginRight="10dp">
-
-                <LinearLayout
-                    android:layout_width="0dp"
-                    android:layout_height="match_parent"
-                    android:layout_weight="1"
-                    android:gravity="center"
-                    android:orientation="vertical">
-
-                    <TextView
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:fontFamily="@font/metropolis_regular"
-                        android:text="Settings"
-                        android:textColor="@color/mainText"
-                        android:textSize="16sp" />
-
-                    <TextView
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:layout_marginTop="5dp"
-                        android:fontFamily="@font/metropolis_regular"
-                        android:textColor="@color/textAd"
-                        android:text="Notifications, password"
                         android:textSize="12sp" />
 
                 </LinearLayout>

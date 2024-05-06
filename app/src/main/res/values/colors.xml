@@ -16,4 +16,6 @@
     <color name="whiteColored">#FFFFFFFF</color>
     <color name="mainButton">#0ACF83</color>
     <color name="selectedHome">#FF009688</color>
+    <color name="menuSeller">#0D1666</color>
+    <color name="backgroundProductAdmin">#313378</color>
 </resources>

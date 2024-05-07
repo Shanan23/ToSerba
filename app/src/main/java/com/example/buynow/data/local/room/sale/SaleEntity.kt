@@ -16,6 +16,8 @@ data class SaleEntity(
     @ColumnInfo(name = "Sale_Package_Status") var status: String,
     @ColumnInfo(name = "Sale_Discount") var discount: Double,
     @ColumnInfo(name = "Sale_Send_Amount") var sendAmount: Double,
+    @ColumnInfo(name = "Sale_Resi") var resi: String,
+    @ColumnInfo(name = "Sale_Detail") var detail: String,
 ) {
     @PrimaryKey(autoGenerate = true)
     var id: Int = 0

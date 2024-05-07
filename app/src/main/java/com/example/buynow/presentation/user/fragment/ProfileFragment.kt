@@ -22,6 +22,7 @@ import com.example.buynow.R
 import com.example.buynow.data.local.room.card.CardViewModel
 import com.example.buynow.presentation.SplashScreenActivity
 import com.example.buynow.presentation.admin.activity.HomeAdminActivity
+import com.example.buynow.presentation.seller.activity.HomeSellerActivity
 import com.example.buynow.presentation.user.activity.SettingsActivity
 import com.example.buynow.utils.FirebaseUtils
 import com.example.buynow.utils.FirebaseUtils.storageReference
@@ -50,9 +51,9 @@ class ProfileFragment : Fragment() {
     private val PICK_IMAGE_REQUEST = 71
     private var filePath: Uri? = null
 
-    lateinit var uploadImage_profileFrag:Button
-    lateinit var profileName_profileFrag:TextView
-    lateinit var profileEmail_profileFrag:TextView
+    lateinit var uploadImage_profileFrag: Button
+    lateinit var profileName_profileFrag: TextView
+    lateinit var profileEmail_profileFrag: TextView
 
     private lateinit var cardViewModel: CardViewModel
 
@@ -61,9 +62,9 @@ class ProfileFragment : Fragment() {
 
     var cards: Int = 0
 
-    lateinit var linearLayout2:LinearLayout
-    lateinit var linearLayout3:LinearLayout
-    lateinit var linearLayout4:LinearLayout
+    lateinit var linearLayout2: LinearLayout
+    lateinit var linearLayout3: LinearLayout
+    lateinit var linearLayout4: LinearLayout
 
 
     override fun onCreateView(
@@ -74,7 +75,6 @@ class ProfileFragment : Fragment() {
         val view = inflater.inflate(R.layout.fragment_profile, container, false)
 
         profileImage_profileFrag = view.findViewById(R.id.profileImage_profileFrag)
-        val sellerProfileFrag = view.findViewById<LinearLayout>(R.id.sellerProfilePage)
         val logOut = view.findViewById<LinearLayout>(R.id.logOut)
         uploadImage_profileFrag = view.findViewById(R.id.uploadImage_profileFrag)
         profileName_profileFrag = view.findViewById(R.id.profileName_profileFrag)
@@ -84,7 +84,8 @@ class ProfileFragment : Fragment() {
         linearLayout3 = view.findViewById(R.id.linearLayout3)
         linearLayout4 = view.findViewById(R.id.linearLayout4)
 
-        val adminProfilepage = view.findViewById<LinearLayout>(R.id.adminProfilePage)
+        val adminProfilePage = view.findViewById<LinearLayout>(R.id.adminProfilePage)
+        val sellerProfilePage = view.findViewById<LinearLayout>(R.id.sellerProfilePage)
 
         cardViewModel = ViewModelProviders.of(this).get(CardViewModel::class.java)
 
@@ -98,13 +99,16 @@ class ProfileFragment : Fragment() {
             var intent = Intent(requireContext(), SplashScreenActivity::class.java)
             intent.flags =
                 Intent.FLAG_ACTIVITY_NEW_TASK and Intent.FLAG_ACTIVITY_CLEAR_TASK and Intent.FLAG_ACTIVITY_CLEAR_TOP
-
-
             startActivity(intent)
         }
 
-        adminProfilepage.setOnClickListener {
+        adminProfilePage.setOnClickListener {
             val intent = Intent(context, HomeAdminActivity::class.java)
+            startActivity(intent)
+        }
+
+        sellerProfilePage.setOnClickListener {
+            val intent = Intent(context, HomeSellerActivity::class.java)
             startActivity(intent)
         }
 
@@ -120,23 +124,17 @@ class ProfileFragment : Fragment() {
         uploadImage_profileFrag.setOnClickListener {
             uploadImage()
         }
-
-        sellerProfileFrag.setOnClickListener {
-            val intent = Intent(context, SettingsActivity::class.java)
-            startActivity(intent)
-        }
-
-
-
+        
         profileImage_profileFrag.setOnClickListener {
 
-            val popupMenu: PopupMenu = PopupMenu(context,profileImage_profileFrag)
+            val popupMenu: PopupMenu = PopupMenu(context, profileImage_profileFrag)
 
-            popupMenu.menuInflater.inflate(R.menu.profile_photo_storage,popupMenu.menu)
+            popupMenu.menuInflater.inflate(R.menu.profile_photo_storage, popupMenu.menu)
             popupMenu.setOnMenuItemClickListener(PopupMenu.OnMenuItemClickListener { item ->
-                when(item.itemId) {
+                when (item.itemId) {
                     R.id.galleryMenu ->
                         launchGallery()
+
                     R.id.cameraMenu ->
                         uploadImage()
 
@@ -145,12 +143,12 @@ class ProfileFragment : Fragment() {
             })
             popupMenu.show()
 
-    }
+        }
 
         return view
     }
 
-    private fun hideLayout(){
+    private fun hideLayout() {
         animationView.playAnimation()
         animationView.loop(true)
         linearLayout2.visibility = View.GONE
@@ -158,7 +156,8 @@ class ProfileFragment : Fragment() {
         linearLayout4.visibility = View.GONE
         animationView.visibility = View.VISIBLE
     }
-    private fun showLayout(){
+
+    private fun showLayout() {
         animationView.pauseAnimation()
         animationView.visibility = View.GONE
         linearLayout2.visibility = View.VISIBLE
@@ -192,7 +191,7 @@ class ProfileFragment : Fragment() {
             }
 
 
-        }catch (e:Exception){
+        } catch (e: Exception) {
 
         }
     }
@@ -204,34 +203,35 @@ class ProfileFragment : Fragment() {
         startActivityForResult(Intent.createChooser(intent, "Select Picture"), PICK_IMAGE_REQUEST)
     }
 
-    private fun uploadImage(){
+    private fun uploadImage() {
 
-        if(filePath != null){
+        if (filePath != null) {
             val ref = storageReference.child("profile_Image/" + UUID.randomUUID().toString())
             val uploadTask = ref?.putFile(filePath!!)
 
-            val urlTask = uploadTask?.continueWithTask(Continuation<UploadTask.TaskSnapshot, Task<Uri>> { task ->
-                if (!task.isSuccessful) {
-                    task.exception?.let {
-                        throw it
+            val urlTask =
+                uploadTask?.continueWithTask(Continuation<UploadTask.TaskSnapshot, Task<Uri>> { task ->
+                    if (!task.isSuccessful) {
+                        task.exception?.let {
+                            throw it
+                        }
                     }
+                    return@Continuation ref.downloadUrl
+                })?.addOnCompleteListener { task ->
+                    if (task.isSuccessful) {
+                        val downloadUri = task.result
+                        addUploadRecordToDb(downloadUri.toString())
+
+                        // show save...
+
+
+                    } else {
+                        // Handle failures
+                    }
+                }?.addOnFailureListener {
+
                 }
-                return@Continuation ref.downloadUrl
-            })?.addOnCompleteListener { task ->
-                if (task.isSuccessful) {
-                    val downloadUri = task.result
-                    addUploadRecordToDb(downloadUri.toString())
-
-                    // show save...
-
-
-                } else {
-                    // Handle failures
-                }
-            }?.addOnFailureListener{
-
-            }
-        }else{
+        } else {
 
             Toast.makeText(requireContext(), "Please Upload an Image", Toast.LENGTH_SHORT).show()
         }
@@ -241,7 +241,7 @@ class ProfileFragment : Fragment() {
         super.onActivityResult(requestCode, resultCode, data)
 
         if (requestCode == PICK_IMAGE_REQUEST && resultCode == Activity.RESULT_OK) {
-            if(data == null || data.data == null){
+            if (data == null || data.data == null) {
                 return
             }
 
@@ -261,15 +261,16 @@ class ProfileFragment : Fragment() {
         try {
 
             userCollectionRef.document(firebaseAuth.uid.toString())
-                .update("userImage" , uri ).await()
+                .update("userImage", uri).await()
 
-            withContext(Dispatchers.Main){
+            withContext(Dispatchers.Main) {
                 Toast.makeText(requireContext(), "Saved", Toast.LENGTH_SHORT).show()
             }
 
-        }catch (e:Exception){
-            withContext(Dispatchers.Main){
-                Toast.makeText(requireContext(), ""+e.message.toString(), Toast.LENGTH_SHORT).show()
+        } catch (e: Exception) {
+            withContext(Dispatchers.Main) {
+                Toast.makeText(requireContext(), "" + e.message.toString(), Toast.LENGTH_SHORT)
+                    .show()
             }
         }
     }

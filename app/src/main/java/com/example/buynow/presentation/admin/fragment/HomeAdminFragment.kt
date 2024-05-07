@@ -116,7 +116,7 @@ class HomeAdminFragment : Fragment() {
         val itemDao = AppDatabase.getInstance(requireContext()).itemDao()
         val categoryDao = AppDatabase.getInstance(requireContext()).categoryDao()
 
-        val viewModelFactory = SummaryViewModelFactory(requireContext(), itemDao, categoryDao)
+        val viewModelFactory = SummaryViewModelFactory(requireContext(), itemDao, categoryDao, null)
 
         summaryViewModel =
             ViewModelProviders.of(this, viewModelFactory).get(SummaryViewModel::class.java)

@@ -13,13 +13,9 @@ import androidx.lifecycle.ViewModelProviders
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.example.buynow.R
-import com.example.buynow.data.local.room.AppDatabase
-import com.example.buynow.data.local.room.SummaryViewModel
-import com.example.buynow.data.local.room.SummaryViewModelFactory
 import com.example.buynow.data.local.room.item.ItemEntity
 import com.example.buynow.data.local.room.item.ItemViewModel
 import com.example.buynow.presentation.admin.adapter.ProductAdminAdapter
-import com.example.buynow.presentation.admin.adapter.SummaryAdminAdapter
 
 class ProductAdminFragment : Fragment() {
 

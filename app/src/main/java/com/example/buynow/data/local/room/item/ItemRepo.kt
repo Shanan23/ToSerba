@@ -2,6 +2,7 @@ package com.example.buynow.data.local.room.item
 
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
+import com.example.buynow.data.local.room.sale.SaleEntity
 
 class ItemRepo(private val itemDao: ItemDao) {
 
@@ -27,5 +28,9 @@ class ItemRepo(private val itemDao: ItemDao) {
 
     suspend fun getItemById(itemId: String): LiveData<ItemEntity> {
         return itemDao.getByItemId(itemId)
+    }
+
+    suspend fun getByUserId(userId: String): LiveData<List<ItemEntity>> {
+        return itemDao.getByUserId(userId)
     }
 }

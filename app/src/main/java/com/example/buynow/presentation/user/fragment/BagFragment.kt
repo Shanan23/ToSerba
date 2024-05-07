@@ -43,6 +43,7 @@ class BagFragment : Fragment(), CartItemClickAdapter {
     lateinit var applyVoucher: LinearLayout
     lateinit var Item: ArrayList<ProductEntity>
     var sum: Int = 0
+    var countDetail: Int = 0
     var subTotal: Int = 0
     var discount: Int = 0
 
@@ -96,6 +97,7 @@ class BagFragment : Fragment(), CartItemClickAdapter {
                 total = 0
                 Item.addAll(it)
             }
+            countDetail = 0
 
             if (List.size == 0) {
                 animationView.playAnimation()
@@ -114,6 +116,7 @@ class BagFragment : Fragment(), CartItemClickAdapter {
             Item.forEach {
                 if (it.isCheck) {
                     sum += it.subTotal
+                    countDetail++
                 }
             }
             totalPriceBagFrag.text = "Rp " + sum
@@ -144,7 +147,9 @@ class BagFragment : Fragment(), CartItemClickAdapter {
                 "",
                 StringUtils.orderStatusList[0],
                 discount.toDouble(),
-                0.0
+                0.0,
+                System.currentTimeMillis().toString(),
+                countDetail.toString()
             )
             saleViewModel.insertSale(sale)
             Item.forEach {
@@ -178,7 +183,7 @@ class BagFragment : Fragment(), CartItemClickAdapter {
 
     override fun onItemDeleteClick(product: ProductEntity) {
         cartViewModel.deleteCart(product)
-        Toast.makeText(context,"Removed From Bag",Toast.LENGTH_SHORT).show()
+        Toast.makeText(context, "Removed From Bag", Toast.LENGTH_SHORT).show()
     }
 
     override fun onItemUpdateClick(product: ProductEntity) {

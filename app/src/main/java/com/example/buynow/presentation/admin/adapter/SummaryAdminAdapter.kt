@@ -2,7 +2,6 @@ package com.example.buynow.presentation.admin.adapter
 
 
 import android.content.Context
-import android.content.Intent
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -13,7 +12,6 @@ import com.bumptech.glide.Glide
 import com.example.buynow.R
 import com.example.buynow.R.drawable.ic_admin_3
 import com.example.buynow.data.model.SummaryAdmin
-import com.example.buynow.presentation.user.activity.ProductDetailsActivity
 
 class SummaryAdminAdapter(private val dataList: List<SummaryAdmin>, context: Context) :
     RecyclerView.Adapter<SummaryAdminAdapter.ViewHolder>() {

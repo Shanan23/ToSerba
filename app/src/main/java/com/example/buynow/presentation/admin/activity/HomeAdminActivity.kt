@@ -7,10 +7,11 @@ import com.example.buynow.R
 import com.example.buynow.presentation.admin.fragment.HomeAdminFragment
 import com.example.buynow.presentation.admin.fragment.ProductAdminFragment
 import com.example.buynow.presentation.admin.fragment.UserAdminFragment
-import com.example.buynow.presentation.user.fragment.RecentFragment
+import com.example.buynow.presentation.user.fragment.ProfileFragment
 import com.google.android.material.bottomnavigation.BottomNavigationView
 
-class HomeAdminActivity : AppCompatActivity(), BottomNavigationView.OnNavigationItemSelectedListener {
+class HomeAdminActivity : AppCompatActivity(),
+    BottomNavigationView.OnNavigationItemSelectedListener {
     lateinit var bottomNavigationView: BottomNavigationView
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -20,7 +21,8 @@ class HomeAdminActivity : AppCompatActivity(), BottomNavigationView.OnNavigation
         bottomNavigationView = findViewById(R.id.bottomNavMenu)
         bottomNavigationView.setOnNavigationItemSelectedListener(this)
 
-        supportFragmentManager.beginTransaction().replace(R.id.nav_fragment, HomeAdminFragment() ).commit()
+        supportFragmentManager.beginTransaction().replace(R.id.nav_fragment, HomeAdminFragment())
+            .commit()
     }
 
     override fun onNavigationItemSelected(item: MenuItem): Boolean {
@@ -50,10 +52,8 @@ class HomeAdminActivity : AppCompatActivity(), BottomNavigationView.OnNavigation
             }
 
             R.id.profileMenu -> {
-                val fragment = RecentFragment()
-                supportFragmentManager.beginTransaction()
-                    .replace(R.id.nav_fragment, fragment, fragment.javaClass.simpleName)
-                    .commit()
+                finish()
+
                 return true
             }
         }

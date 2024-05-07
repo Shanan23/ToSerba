@@ -19,6 +19,7 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.BuyNow">
         <activity android:name=".presentation.admin.activity.HomeAdminActivity" />
+        <activity android:name=".presentation.seller.activity.HomeSellerActivity" />
         <activity android:name=".presentation.user.activity.PaymentMethodActivity" />
         <activity android:name=".presentation.user.activity.AddAddressActivity" />
         <activity android:name=".presentation.user.activity.ShipingAddressActivity" />

@@ -14,7 +14,6 @@ import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import com.example.buynow.R
 import com.example.buynow.R.drawable.bn
-import com.example.buynow.data.local.room.item.ItemEntity
 import com.example.buynow.data.model.User
 import com.example.buynow.presentation.user.activity.ProductDetailsActivity
 import java.text.DecimalFormat

@@ -13,6 +13,7 @@ class SaleViewModel(application: Application) : AndroidViewModel(application) {
 
     private val repository: SaleRepo
     val allSales: LiveData<List<SaleEntity>>
+    val sales: MutableLiveData<List<SaleEntity>> = MutableLiveData()
     val sale: MutableLiveData<SaleEntity> = MutableLiveData()
 
     init {
@@ -25,6 +26,22 @@ class SaleViewModel(application: Application) : AndroidViewModel(application) {
         viewModelScope.launch(Dispatchers.Main) {
             repository.getBySaleId(saleId).observeForever { retrievedItem ->
                 sale.postValue(retrievedItem)
+            }
+        }
+    }
+
+    fun getByUserID(userId: String) = viewModelScope.launch(Dispatchers.IO) {
+        viewModelScope.launch(Dispatchers.Main) {
+            repository.getByUserId(userId).observeForever { retrievedItem ->
+                sales.postValue(retrievedItem)
+            }
+        }
+    }
+
+    fun getByUserIdAndStatus(userId: String, status:String) = viewModelScope.launch(Dispatchers.IO) {
+        viewModelScope.launch(Dispatchers.Main) {
+            repository.getByUserIdAndStatus(userId, status).observeForever { retrievedItem ->
+                sales.postValue(retrievedItem)
             }
         }
     }

@@ -17,6 +17,9 @@ interface SaleDao {
     @Query("SELECT * FROM sales WHERE Sale_User_ID = :userId order by Sale_ID asc")
     fun getByUserId(userId: String): LiveData<List<SaleEntity>>
 
+    @Query("SELECT * FROM sales WHERE Sale_User_ID = :userId AND Sale_Package_Status = :status order by Sale_ID asc")
+    fun getByUserIdAndStatus(userId: String, status:String): LiveData<List<SaleEntity>>
+
     @Query("SELECT * FROM sales WHERE Sale_ID = :saleId order by Sale_ID asc")
     fun getBySaleId(saleId: String): LiveData<SaleEntity>
 

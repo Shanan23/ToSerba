@@ -14,6 +14,7 @@ class ItemViewModel(application: Application) : AndroidViewModel(application) {
     private val repository: ItemRepo
     val allItems: LiveData<List<ItemEntity>>
     val item: MutableLiveData<ItemEntity> = MutableLiveData()
+    val items: MutableLiveData<List<ItemEntity>> = MutableLiveData()
 
     init {
         val itemDao = AppDatabase.getInstance(application).itemDao()
@@ -25,6 +26,14 @@ class ItemViewModel(application: Application) : AndroidViewModel(application) {
         viewModelScope.launch(Dispatchers.Main) {
             repository.getItemById(itemId).observeForever { retrievedItem ->
                 item.postValue(retrievedItem)
+            }
+        }
+    }
+
+    fun getByUserID(userId: String) = viewModelScope.launch(Dispatchers.IO) {
+        viewModelScope.launch(Dispatchers.Main) {
+            repository.getByUserId(userId).observeForever { retrievedItem ->
+                items.postValue(retrievedItem)
             }
         }
     }

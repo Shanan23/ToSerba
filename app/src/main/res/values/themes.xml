@@ -44,6 +44,12 @@
         <item name="itemIconTint">@color/white</item>
     </style>
 
+    <style name="ButtonStyle" parent="Widget.MaterialComponents.Button">
+        <item name="android:background">@drawable/btn_bg_admin</item>
+        <item name="itemTextColor">@color/white</item>
+        <item name="itemIconTint">@color/white</item>
+    </style>
+
     <style name="RatingBar" parent="Theme.AppCompat">
         <item name="android:colorControlNormal">@color/textAd</item>
         <item name="android:colorControlActivated">@color/rating</item>

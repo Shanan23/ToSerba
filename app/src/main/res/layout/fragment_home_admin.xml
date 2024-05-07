@@ -96,11 +96,13 @@
             android:id="@+id/adminSummaryRecView"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            tools:listitem="@layout/summary_admin_single"
             android:layout_marginTop="20dp" />
 
         <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/adminProductRecView"
             android:layout_width="match_parent"
+            tools:listitem="@layout/product_admin_single"
             android:layout_height="wrap_content"
             android:layout_marginTop="20dp" />
     </LinearLayout>

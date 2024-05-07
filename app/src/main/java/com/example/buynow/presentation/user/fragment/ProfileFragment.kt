@@ -9,18 +9,21 @@ import android.provider.MediaStore
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.*
-import androidx.cardview.widget.CardView
+import android.widget.Button
+import android.widget.LinearLayout
+import android.widget.PopupMenu
+import android.widget.TextView
+import android.widget.Toast
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProviders
 import com.airbnb.lottie.LottieAnimationView
 import com.bumptech.glide.Glide
 import com.example.buynow.R
 import com.example.buynow.data.local.room.card.CardViewModel
+import com.example.buynow.presentation.SplashScreenActivity
 import com.example.buynow.presentation.admin.activity.HomeAdminActivity
-import com.example.buynow.presentation.admin.fragment.HomeAdminFragment
 import com.example.buynow.presentation.user.activity.SettingsActivity
-import com.example.buynow.presentation.user.activity.ShipingAddressActivity
+import com.example.buynow.utils.FirebaseUtils
 import com.example.buynow.utils.FirebaseUtils.storageReference
 import com.google.android.gms.tasks.Continuation
 import com.google.android.gms.tasks.Task
@@ -35,7 +38,7 @@ import kotlinx.coroutines.launch
 import kotlinx.coroutines.tasks.await
 import kotlinx.coroutines.withContext
 import java.io.IOException
-import java.util.*
+import java.util.UUID
 
 
 class ProfileFragment : Fragment() {
@@ -71,7 +74,8 @@ class ProfileFragment : Fragment() {
         val view = inflater.inflate(R.layout.fragment_profile, container, false)
 
         profileImage_profileFrag = view.findViewById(R.id.profileImage_profileFrag)
-        val sellerProfileFrag = view.findViewById<CardView>(R.id.sellerProfilePage)
+        val sellerProfileFrag = view.findViewById<LinearLayout>(R.id.sellerProfilePage)
+        val logOut = view.findViewById<LinearLayout>(R.id.logOut)
         uploadImage_profileFrag = view.findViewById(R.id.uploadImage_profileFrag)
         profileName_profileFrag = view.findViewById(R.id.profileName_profileFrag)
         profileEmail_profileFrag = view.findViewById(R.id.profileEmail_profileFrag)
@@ -79,10 +83,8 @@ class ProfileFragment : Fragment() {
         linearLayout2 = view.findViewById(R.id.linearLayout2)
         linearLayout3 = view.findViewById(R.id.linearLayout3)
         linearLayout4 = view.findViewById(R.id.linearLayout4)
-        val shippingAddressCard_ProfilePage =
-            view.findViewById<CardView>(R.id.shippingAddressCard_ProfilePage)
-        val adminProfilepage = view.findViewById<CardView>(R.id.adminProfilePage)
-        val cardsNumber_profileFrag: TextView = view.findViewById(R.id.cardsNumber_profileFrag)
+
+        val adminProfilepage = view.findViewById<LinearLayout>(R.id.adminProfilePage)
 
         cardViewModel = ViewModelProviders.of(this).get(CardViewModel::class.java)
 
@@ -90,16 +92,15 @@ class ProfileFragment : Fragment() {
             cards = it.size
         })
 
-        if(cards == 0){
-            cardsNumber_profileFrag.text = "You Have no Cards."
-        }
-        else{
+        logOut.setOnClickListener {
+            FirebaseUtils.firebaseAuth.signOut()
 
-        cardsNumber_profileFrag.text = "You Have "+ cards.toString() + " Cards."
-        }
+            var intent = Intent(requireContext(), SplashScreenActivity::class.java)
+            intent.flags =
+                Intent.FLAG_ACTIVITY_NEW_TASK and Intent.FLAG_ACTIVITY_CLEAR_TASK and Intent.FLAG_ACTIVITY_CLEAR_TOP
 
-        shippingAddressCard_ProfilePage.setOnClickListener {
-            startActivity(Intent(context, ShipingAddressActivity::class.java))
+
+            startActivity(intent)
         }
 
         adminProfilepage.setOnClickListener {
@@ -168,19 +169,20 @@ class ProfileFragment : Fragment() {
     private fun getUserData() = CoroutineScope(Dispatchers.IO).launch {
         try {
 
-             val querySnapshot = userCollectionRef
-                 .document(firebaseAuth.uid.toString())
-                 .get().await()
+            val querySnapshot = userCollectionRef
+                .document(firebaseAuth.uid.toString())
+                .get().await()
 
-            val userImage:String = querySnapshot.data?.get("userImage").toString()
-            val userName:String = querySnapshot.data?.get("userName").toString()
-            val userEmail:String = querySnapshot.data?.get("userEmail").toString()
+            val userImage: String = querySnapshot.data?.get("userImage").toString()
+            val userName: String = querySnapshot.data?.get("userName").toString()
+            val userEmail: String = querySnapshot.data?.get("userEmail").toString()
+            val userAddress: String = querySnapshot.data?.get("userAddress").toString()
 
 
-            withContext(Dispatchers.Main){
+            withContext(Dispatchers.Main) {
 
                 profileName_profileFrag.text = userName
-                profileEmail_profileFrag.text = userEmail
+                profileEmail_profileFrag.text = userAddress
                 Glide.with(this@ProfileFragment)
                     .load(userImage)
                     .placeholder(R.drawable.ic_profile)

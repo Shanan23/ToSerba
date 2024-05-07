@@ -1,15 +1,13 @@
 package com.example.buynow.presentation.admin.activity
 
-import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.view.MenuItem
+import androidx.appcompat.app.AppCompatActivity
 import com.example.buynow.R
 import com.example.buynow.presentation.admin.fragment.HomeAdminFragment
-import com.example.buynow.presentation.user.fragment.BagFragment
-import com.example.buynow.presentation.user.fragment.FavFragment
-import com.example.buynow.presentation.user.fragment.HomeFragment
-import com.example.buynow.presentation.user.fragment.ProfileFragment
-import com.example.buynow.presentation.user.fragment.ShopFragment
+import com.example.buynow.presentation.admin.fragment.ProductAdminFragment
+import com.example.buynow.presentation.admin.fragment.UserAdminFragment
+import com.example.buynow.presentation.user.fragment.RecentFragment
 import com.google.android.material.bottomnavigation.BottomNavigationView
 
 class HomeAdminActivity : AppCompatActivity(), BottomNavigationView.OnNavigationItemSelectedListener {
@@ -28,7 +26,7 @@ class HomeAdminActivity : AppCompatActivity(), BottomNavigationView.OnNavigation
     override fun onNavigationItemSelected(item: MenuItem): Boolean {
         when (item.itemId) {
             R.id.homeMenu -> {
-                val fragment = HomeFragment()
+                val fragment = HomeAdminFragment()
                 supportFragmentManager.beginTransaction()
                     .replace(R.id.nav_fragment, fragment, fragment.javaClass.simpleName)
                     .commit()
@@ -36,7 +34,7 @@ class HomeAdminActivity : AppCompatActivity(), BottomNavigationView.OnNavigation
             }
 
             R.id.productMenu -> {
-                val fragment = ShopFragment()
+                val fragment = ProductAdminFragment()
                 supportFragmentManager.beginTransaction()
                     .replace(R.id.nav_fragment, fragment, fragment.javaClass.simpleName)
                     .commit()
@@ -44,7 +42,7 @@ class HomeAdminActivity : AppCompatActivity(), BottomNavigationView.OnNavigation
             }
 
             R.id.userMenu -> {
-                val fragment = BagFragment()
+                val fragment = UserAdminFragment()
                 supportFragmentManager.beginTransaction()
                     .replace(R.id.nav_fragment, fragment, fragment.javaClass.simpleName)
                     .commit()
@@ -52,7 +50,7 @@ class HomeAdminActivity : AppCompatActivity(), BottomNavigationView.OnNavigation
             }
 
             R.id.profileMenu -> {
-                val fragment = FavFragment()
+                val fragment = RecentFragment()
                 supportFragmentManager.beginTransaction()
                     .replace(R.id.nav_fragment, fragment, fragment.javaClass.simpleName)
                     .commit()

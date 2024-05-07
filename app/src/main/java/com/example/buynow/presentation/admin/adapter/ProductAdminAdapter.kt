@@ -61,9 +61,9 @@ class ProductAdminAdapter(private val productList: ArrayList<ItemEntity>, contex
 
     class ViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
         val imgProduct: ImageView = itemView.findViewById(R.id.imgProduct)
-        val productName: TextView = itemView.findViewById(R.id.productName)
-        val productCategory: TextView = itemView.findViewById(R.id.productCategory)
-        val productPrice: TextView = itemView.findViewById(R.id.productPrice)
+        val productName: TextView = itemView.findViewById(R.id.userName)
+        val productCategory: TextView = itemView.findViewById(R.id.userPhone)
+        val productPrice: TextView = itemView.findViewById(R.id.userAddress)
         val productStock: TextView = itemView.findViewById(R.id.productStock)
         val icEdit: ImageView = itemView.findViewById(R.id.icEdit)
         val icDelete: ImageView = itemView.findViewById(R.id.icDelete)

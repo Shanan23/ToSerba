@@ -19,7 +19,11 @@ interface ProductDao {
     suspend fun update(vararg product: ProductEntity)
     @Query("SELECT * FROM cart_items WHERE Product_Is_Pay = 0 order by Product_ID asc")
     fun getProductUnPaid(): LiveData<List<ProductEntity>>
+
     @Query("SELECT * FROM cart_items WHERE Product_Is_Pay = 0 AND Product_User_ID = :userId order by Product_ID asc")
     fun getProductUnPaidByUser(userId:String): LiveData<List<ProductEntity>>
+
+    @Query("SELECT * FROM cart_items WHERE Product_Shop_ID = :sellerId order by Product_ID asc")
+    fun getProductBySeller(sellerId:String): LiveData<List<ProductEntity>>
 
 }

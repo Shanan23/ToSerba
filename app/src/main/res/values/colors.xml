@@ -19,4 +19,5 @@
     <color name="selectedHome">#FF009688</color>
     <color name="menuSeller">#0D1666</color>
     <color name="backgroundProductAdmin">#313378</color>
+    <color name="backgroundProductSeller">#5B3075</color>
 </resources>

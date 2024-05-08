@@ -7,6 +7,7 @@ import androidx.room.PrimaryKey
 @Entity(tableName = "cart_items")
 data class ProductEntity (
     @ColumnInfo(name = "Product_User_ID") var uId: String,
+    @ColumnInfo(name = "Product_Shop_ID") var pSId: String,
     @ColumnInfo(name = "Product_Name") var name: String,
     @ColumnInfo(name = "Product_Quantity") var qua: Int,
     @ColumnInfo(name = "Product_Price") var price: Int,
@@ -16,6 +17,7 @@ data class ProductEntity (
     @ColumnInfo(name = "Product_Is_Check") var isCheck: Boolean,
     @ColumnInfo(name = "Product_Is_Pay") var isPay: Boolean,
     @ColumnInfo(name = "Product_Sale_ID") var saleId: String,
+    @ColumnInfo(name = "Product_Sale_Resi") var resi: String,
 
         ){
     @PrimaryKey(autoGenerate = true)

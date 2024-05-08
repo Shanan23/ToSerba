@@ -11,8 +11,8 @@ class CartRepo(private val productDao: ProductDao) {
         MutableLiveData<ProductEntity>()
     }
 
-    suspend fun getProductUnPaid(): LiveData<List<ProductEntity>> {
-        return productDao.getProductUnPaid()
+    suspend fun getProductBySeller(sellerId: String): LiveData<List<ProductEntity>> {
+        return productDao.getProductBySeller(sellerId)
     }
 
     suspend fun getProductUnPaidByUser(userId: String): LiveData<List<ProductEntity>> {

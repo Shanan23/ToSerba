@@ -1,6 +1,5 @@
 package com.example.buynow.presentation.user.activity
 
-import android.content.Intent
 import android.os.Bundle
 import android.view.WindowManager
 import android.widget.Button
@@ -21,7 +20,6 @@ import com.example.buynow.data.local.room.cart.ProductEntity
 import com.example.buynow.data.local.room.item.ItemEntity
 import com.example.buynow.data.local.room.item.ItemViewModel
 import com.example.buynow.presentation.user.adapter.ProductAdapter
-import com.example.buynow.utils.Extensions.cardXXGen
 import com.example.buynow.utils.Extensions.toast
 import com.google.firebase.auth.FirebaseAuth
 
@@ -55,8 +53,8 @@ class ProductDetailsActivity : AppCompatActivity() {
     var pPrice: Int = 0
     var subTotal: Int = 0
     var pPid: Int = 0
+    var pUid: String = ""
     lateinit var pImage: String
-
 
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -127,6 +125,7 @@ class ProductDetailsActivity : AppCompatActivity() {
         cartViewModel.insert(
             ProductEntity(
                 firebaseAuth.uid.toString(),
+                pUid,
                 pName,
                 qua,
                 pPrice,
@@ -135,7 +134,7 @@ class ProductDetailsActivity : AppCompatActivity() {
                 pImage,
                 true,
                 false,
-                ""
+                "", ""
             )
         )
         toast("Tambah ke keranjang berhasil")
@@ -161,6 +160,7 @@ class ProductDetailsActivity : AppCompatActivity() {
             pName = itemSelected.name
             subTotal = itemSelected.price * qua
             pPrice = itemSelected.price
+            pUid = itemSelected.pUId
             pPid = itemSelected.pId
             pImage = itemSelected.image
             addToCart_ProductDetailsPage.text =

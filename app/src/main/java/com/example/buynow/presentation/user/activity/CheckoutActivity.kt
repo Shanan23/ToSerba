@@ -75,6 +75,7 @@ class CheckoutActivity : AppCompatActivity(), CourierAdapter.OnCourierClickListe
     private lateinit var cartViewModel: CartViewModel
     lateinit var courierAdapter: CourierAdapter
     private val userCollectionRef = Firebase.firestore.collection("Users")
+    var totalBefore: Double = 0.0
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -129,6 +130,7 @@ class CheckoutActivity : AppCompatActivity(), CourierAdapter.OnCourierClickListe
 
 
         if (sale != null) {
+            totalBefore = sale?.total!!
             (sale?.total!! + sale?.discount!!).toString().also { paymentSubTotalValue.text = it }
             paymentDiscountValue.text = sale?.discount!!.toString()
             paymentShipmentValue.text = sale?.sendAmount!!.toString()
@@ -143,7 +145,7 @@ class CheckoutActivity : AppCompatActivity(), CourierAdapter.OnCourierClickListe
         sale?.courier = courier.name
         sale?.sendAmount = courier.price.toDouble()
         paymentShipmentValue.text = sale?.sendAmount!!.toString()
-        sale?.total = sale?.total!! + courier.price.toDouble()
+        sale?.total = totalBefore + courier.price.toDouble()
 
         paymentTotalValue.text = sale?.total!!.toString()
         paymentGrandTotalValue.text = sale?.total!!.toString()

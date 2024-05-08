@@ -22,8 +22,6 @@ class SaleAdapter(private val ctx: Context, val listener: SaleItemClickAdapter) 
     }
 
     override fun onBindViewHolder(holder: SaleViewHolder, position: Int) {
-
-
         val cartItem: SaleEntity = cartList[position]
 
         holder.trxResi.text = "Lacak nomor resi : " + cartItem.resi

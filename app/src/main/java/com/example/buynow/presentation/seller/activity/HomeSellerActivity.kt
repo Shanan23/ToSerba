@@ -6,9 +6,7 @@ import androidx.appcompat.app.AppCompatActivity
 import com.example.buynow.R
 import com.example.buynow.presentation.seller.fragment.HomeSellerFragment
 import com.example.buynow.presentation.seller.fragment.ProductSellerFragment
-import com.example.buynow.presentation.seller.fragment.UserSellerFragment
-import com.example.buynow.presentation.user.fragment.ProfileFragment
-import com.example.buynow.presentation.user.fragment.RecentFragment
+import com.example.buynow.presentation.seller.fragment.OrderSellerFragment
 import com.google.android.material.bottomnavigation.BottomNavigationView
 
 class HomeSellerActivity : AppCompatActivity(), BottomNavigationView.OnNavigationItemSelectedListener {
@@ -43,7 +41,7 @@ class HomeSellerActivity : AppCompatActivity(), BottomNavigationView.OnNavigatio
             }
 
             R.id.userMenu -> {
-                val fragment = UserSellerFragment()
+                val fragment = OrderSellerFragment()
                 supportFragmentManager.beginTransaction()
                     .replace(R.id.nav_fragment, fragment, fragment.javaClass.simpleName)
                     .commit()

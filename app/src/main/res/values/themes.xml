@@ -32,13 +32,13 @@
         <item name="itemIconTint">@color/white</item>
     </style>
 
-    <style name="BottomNavigationViewStyleAdmin" parent="Widget.MaterialComponents.BottomNavigationView.Colored">
+    <style name="BottomNavigationViewStyleSeller" parent="Widget.MaterialComponents.BottomNavigationView.Colored">
         <item name="android:background">@drawable/menu_bg_admin</item>
         <item name="itemTextColor">@color/white</item>
         <item name="itemIconTint">@color/white</item>
     </style>
 
-    <style name="BottomNavigationViewStyleSeller" parent="Widget.MaterialComponents.BottomNavigationView.Colored">
+    <style name="BottomNavigationViewStyleAdmin" parent="Widget.MaterialComponents.BottomNavigationView.Colored">
         <item name="android:background">@drawable/menu_bg_seller</item>
         <item name="itemTextColor">@color/white</item>
         <item name="itemIconTint">@color/white</item>

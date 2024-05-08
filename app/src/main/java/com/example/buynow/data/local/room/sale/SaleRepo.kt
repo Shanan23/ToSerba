@@ -26,6 +26,7 @@ class SaleRepo(private val saleDao: SaleDao) {
     suspend fun getByUserId(userId: String): LiveData<List<SaleEntity>> {
         return saleDao.getByUserId(userId)
     }
+
     suspend fun getByUserIdAndStatus(userId: String, status: String): LiveData<List<SaleEntity>> {
         return saleDao.getByUserIdAndStatus(userId, status)
     }

@@ -21,9 +21,9 @@ class CartViewModel(application: Application) : AndroidViewModel(application){
         allproducts = repository.allCartProducts
     }
 
-    fun getProductUnPaid() = viewModelScope.launch(Dispatchers.IO) {
+    fun getProductBySeller(sellerId: String) = viewModelScope.launch(Dispatchers.IO) {
         viewModelScope.launch(Dispatchers.Main) {
-            repository.getProductUnPaid().observeForever { retrievedItem ->
+            repository.getProductBySeller(sellerId).observeForever { retrievedItem ->
                 product.postValue(retrievedItem)
             }
         }

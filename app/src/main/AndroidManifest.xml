@@ -19,6 +19,9 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.BuyNow">
         <activity
+            android:name=".presentation.seller.activity.ConfirmOrderActivity"
+            android:exported="false" />
+        <activity
             android:name=".presentation.user.activity.EditProfileActivity"
             android:exported="false" />
         <activity

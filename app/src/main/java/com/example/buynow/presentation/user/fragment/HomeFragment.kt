@@ -1,13 +1,11 @@
 package com.example.buynow.presentation.user.fragment
 
 
-import android.content.Intent
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.view.WindowManager
-import android.widget.Button
 import android.widget.EditText
 import android.widget.ImageButton
 import android.widget.ImageView
@@ -25,7 +23,6 @@ import com.example.buynow.R
 import com.example.buynow.data.local.room.item.ItemEntity
 import com.example.buynow.data.local.room.item.ItemViewModel
 import com.example.buynow.data.model.Category
-import com.example.buynow.presentation.user.activity.VisualSearchActivity
 import com.example.buynow.presentation.user.adapter.CategoryNameAdapter
 import com.example.buynow.presentation.user.adapter.ProductAdapter
 import com.example.buynow.utils.StringUtils.Companion.cateList
@@ -100,10 +97,6 @@ class HomeFragment : Fragment(), CategoryNameAdapter.OnCategoryClickListener {
         saleRecView.setHasFixedSize(true)
         saleProductAdapter = ProductAdapter(saleProduct, requireContext())
         saleRecView.adapter = saleProductAdapter
-
-        visualSearchBtn_homePage.setOnClickListener {
-            startActivity(Intent(context, VisualSearchActivity::class.java))
-        }
 
         showLayout()
 

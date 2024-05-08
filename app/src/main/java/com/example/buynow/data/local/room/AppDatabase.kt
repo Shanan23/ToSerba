@@ -4,8 +4,6 @@ import android.content.Context
 import androidx.room.Database
 import androidx.room.Room
 import androidx.room.RoomDatabase
-import com.example.buynow.data.local.room.card.CardDao
-import com.example.buynow.data.local.room.card.CardEntity
 import com.example.buynow.data.local.room.cart.ProductDao
 import com.example.buynow.data.local.room.cart.ProductEntity
 import com.example.buynow.data.local.room.category.CategoryDao
@@ -17,7 +15,7 @@ import com.example.buynow.data.local.room.sale.SaleEntity
 import java.util.concurrent.Executors
 
 @Database(
-    entities = [ProductEntity::class, CardEntity::class, ItemEntity::class, CategoryEntity::class, SaleEntity::class],
+    entities = [ProductEntity::class, ItemEntity::class, CategoryEntity::class, SaleEntity::class],
     version = 1,
     exportSchema = false
 )
@@ -27,7 +25,6 @@ abstract class AppDatabase:RoomDatabase() {
     abstract fun categoryDao(): CategoryDao
     abstract fun itemDao(): ItemDao
     abstract fun productDao(): ProductDao
-    abstract fun cardDao(): CardDao
 
     companion object {
         @Volatile

@@ -12,6 +12,7 @@
     <color name="colorText">#21242B</color>
     <color name="mainText">#222222</color>
     <color name="textAd">#9B9B9B</color>
+    <color name="backgroundGray">#F5F5F5</color>
     <color name="white">#FFFFFFFF</color>
     <color name="whiteColored">#FFFFFFFF</color>
     <color name="mainButton">#0ACF83</color>

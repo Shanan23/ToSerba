@@ -15,15 +15,13 @@ import android.widget.PopupMenu
 import android.widget.TextView
 import android.widget.Toast
 import androidx.fragment.app.Fragment
-import androidx.lifecycle.ViewModelProviders
 import com.airbnb.lottie.LottieAnimationView
 import com.bumptech.glide.Glide
 import com.example.buynow.R
-import com.example.buynow.data.local.room.card.CardViewModel
 import com.example.buynow.presentation.SplashScreenActivity
 import com.example.buynow.presentation.admin.activity.HomeAdminActivity
 import com.example.buynow.presentation.seller.activity.HomeSellerActivity
-import com.example.buynow.presentation.user.activity.SettingsActivity
+import com.example.buynow.presentation.user.activity.EditProfileActivity
 import com.example.buynow.utils.FirebaseUtils
 import com.example.buynow.utils.FirebaseUtils.storageReference
 import com.google.android.gms.tasks.Continuation
@@ -44,6 +42,7 @@ import java.util.UUID
 
 class ProfileFragment : Fragment() {
 
+    private lateinit var adminProfilePage: LinearLayout
     lateinit var animationView: LottieAnimationView
 
     lateinit var profileImage_profileFrag: CircleImageView
@@ -52,10 +51,10 @@ class ProfileFragment : Fragment() {
     private var filePath: Uri? = null
 
     lateinit var uploadImage_profileFrag: Button
+    lateinit var btnEdit: Button
     lateinit var profileName_profileFrag: TextView
     lateinit var profileEmail_profileFrag: TextView
 
-    private lateinit var cardViewModel: CardViewModel
 
     private val userCollectionRef = Firebase.firestore.collection("Users")
     val firebaseAuth: FirebaseAuth = FirebaseAuth.getInstance()
@@ -79,19 +78,14 @@ class ProfileFragment : Fragment() {
         uploadImage_profileFrag = view.findViewById(R.id.uploadImage_profileFrag)
         profileName_profileFrag = view.findViewById(R.id.profileName_profileFrag)
         profileEmail_profileFrag = view.findViewById(R.id.profileEmail_profileFrag)
+        btnEdit = view.findViewById(R.id.btnEdit)
         animationView = view.findViewById(R.id.animationView)
         linearLayout2 = view.findViewById(R.id.linearLayout2)
         linearLayout3 = view.findViewById(R.id.linearLayout3)
         linearLayout4 = view.findViewById(R.id.linearLayout4)
 
-        val adminProfilePage = view.findViewById<LinearLayout>(R.id.adminProfilePage)
+        adminProfilePage = view.findViewById<LinearLayout>(R.id.adminProfilePage)
         val sellerProfilePage = view.findViewById<LinearLayout>(R.id.sellerProfilePage)
-
-        cardViewModel = ViewModelProviders.of(this).get(CardViewModel::class.java)
-
-        cardViewModel.allCards.observe(viewLifecycleOwner, androidx.lifecycle.Observer {
-            cards = it.size
-        })
 
         logOut.setOnClickListener {
             FirebaseUtils.firebaseAuth.signOut()
@@ -99,6 +93,11 @@ class ProfileFragment : Fragment() {
             var intent = Intent(requireContext(), SplashScreenActivity::class.java)
             intent.flags =
                 Intent.FLAG_ACTIVITY_NEW_TASK and Intent.FLAG_ACTIVITY_CLEAR_TASK and Intent.FLAG_ACTIVITY_CLEAR_TOP
+            startActivity(intent)
+        }
+
+        btnEdit.setOnClickListener {
+            val intent = Intent(requireContext(), EditProfileActivity::class.java)
             startActivity(intent)
         }
 
@@ -124,7 +123,7 @@ class ProfileFragment : Fragment() {
         uploadImage_profileFrag.setOnClickListener {
             uploadImage()
         }
-        
+
         profileImage_profileFrag.setOnClickListener {
 
             val popupMenu: PopupMenu = PopupMenu(context, profileImage_profileFrag)
@@ -176,6 +175,7 @@ class ProfileFragment : Fragment() {
             val userName: String = querySnapshot.data?.get("userName").toString()
             val userEmail: String = querySnapshot.data?.get("userEmail").toString()
             val userAddress: String = querySnapshot.data?.get("userAddress").toString()
+            val userRole: String = querySnapshot.data?.get("userRole").toString()
 
 
             withContext(Dispatchers.Main) {
@@ -187,12 +187,15 @@ class ProfileFragment : Fragment() {
                     .placeholder(R.drawable.ic_profile)
                     .into(profileImage_profileFrag)
 
+                if (!userRole.equals("admin", ignoreCase = true)) {
+                    adminProfilePage.visibility = View.GONE
+                }
                 showLayout()
             }
 
 
         } catch (e: Exception) {
-
+            e.printStackTrace()
         }
     }
 

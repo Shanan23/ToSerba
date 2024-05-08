@@ -2,6 +2,7 @@ package com.example.buynow.presentation.user.fragment
 
 
 import android.content.Context
+import android.content.Intent
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
@@ -22,11 +23,13 @@ import com.example.buynow.data.local.room.cart.CartViewModel
 import com.example.buynow.data.local.room.cart.ProductEntity
 import com.example.buynow.data.local.room.sale.SaleEntity
 import com.example.buynow.data.local.room.sale.SaleViewModel
+import com.example.buynow.presentation.user.activity.CheckoutActivity
 import com.example.buynow.presentation.user.adapter.CartAdapter
 import com.example.buynow.presentation.user.adapter.CartItemClickAdapter
 import com.example.buynow.utils.Extensions.toast
 import com.example.buynow.utils.StringUtils
 import com.google.firebase.auth.FirebaseAuth
+import com.google.gson.Gson
 import java.text.SimpleDateFormat
 import java.util.Date
 
@@ -41,7 +44,7 @@ class BagFragment : Fragment(), CartItemClickAdapter {
     lateinit var checkOut_BagPage: Button
     lateinit var etVoucher: EditText
     lateinit var applyVoucher: LinearLayout
-    lateinit var Item: ArrayList<ProductEntity>
+    lateinit var item: ArrayList<ProductEntity>
     var sum: Int = 0
     var countDetail: Int = 0
     var subTotal: Int = 0
@@ -71,7 +74,7 @@ class BagFragment : Fragment(), CartItemClickAdapter {
         val bottomCartLayout: LinearLayout = view.findViewById(R.id.bottomCartLayout)
         val emptyBagMsgLayout: LinearLayout = view.findViewById(R.id.emptyBagMsgLayout)
         val MybagText: TextView = view.findViewById(R.id.MybagText)
-        Item = arrayListOf()
+        item = arrayListOf()
 
 
         animationView.playAnimation()
@@ -91,11 +94,11 @@ class BagFragment : Fragment(), CartItemClickAdapter {
         cartViewModel.product.observe(viewLifecycleOwner, Observer { List ->
             List?.let {
                 cartAdapter.updateList(it)
-                Item.clear()
+                item.clear()
                 sum = 0
                 subTotal = 0
                 total = 0
-                Item.addAll(it)
+                item.addAll(it)
             }
             countDetail = 0
 
@@ -113,7 +116,7 @@ class BagFragment : Fragment(), CartItemClickAdapter {
                 animationView.pauseAnimation()
             }
 
-            Item.forEach {
+            item.forEach {
                 if (it.isCheck) {
                     sum += it.subTotal
                     countDetail++
@@ -129,6 +132,8 @@ class BagFragment : Fragment(), CartItemClickAdapter {
         cartViewModel.getProductUnPaidByUser(firebaseAuth.uid.toString())
 
         checkOut_BagPage.setOnClickListener {
+
+
             val epochSeconds = System.currentTimeMillis() / 1000
             val currentDate = Date()
             val formatter = SimpleDateFormat("dd-MM-yyyy HH:mm:ss")
@@ -151,14 +156,11 @@ class BagFragment : Fragment(), CartItemClickAdapter {
                 System.currentTimeMillis().toString(),
                 countDetail.toString()
             )
-            saleViewModel.insertSale(sale)
-            Item.forEach {
-                if (it.isCheck) {
-                    it.isPay = true
-                    it.saleId = epochSeconds.toString()
-                    cartViewModel.updateCart(it)
-                }
-            }
+
+            val intent = Intent(context, CheckoutActivity::class.java)
+            intent.putExtra("sale", Gson().toJson(sale))
+            intent.putExtra("item", Gson().toJson(item))
+            startActivity(intent)
         }
 
         applyVoucher.setOnClickListener {

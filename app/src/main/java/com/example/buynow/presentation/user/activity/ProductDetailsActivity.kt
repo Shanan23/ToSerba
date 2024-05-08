@@ -21,7 +21,6 @@ import com.example.buynow.data.local.room.cart.ProductEntity
 import com.example.buynow.data.local.room.item.ItemEntity
 import com.example.buynow.data.local.room.item.ItemViewModel
 import com.example.buynow.presentation.user.adapter.ProductAdapter
-import com.example.buynow.utils.DefaultCard.GetDefCard
 import com.example.buynow.utils.Extensions.cardXXGen
 import com.example.buynow.utils.Extensions.toast
 import com.google.firebase.auth.FirebaseAuth
@@ -58,7 +57,6 @@ class ProductDetailsActivity : AppCompatActivity() {
     var pPid: Int = 0
     lateinit var pImage: String
 
-    lateinit var cardNumber: String
 
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -82,22 +80,6 @@ class ProductDetailsActivity : AppCompatActivity() {
         RecomRecView_ProductDetailsPage = findViewById(R.id.RecomRecView_ProductDetailsPage)
         backIv_ProfileFrag = findViewById(R.id.backIv_ProfileFrag)
         addToCart_ProductDetailsPage = findViewById(R.id.addToCart_ProductDetailsPage)
-        val shippingAddress_productDetailsPage: LinearLayout =
-            findViewById(R.id.shippingAddress_productDetailsPage)
-        val cardNumberProduct_Details: TextView = findViewById(R.id.cardNumberProduct_Details)
-
-        cardNumber = GetDefCard()
-
-        if (cardNumber == "" || cardNumber == null) {
-            cardNumberProduct_Details.text = "You Have No Cards"
-        } else {
-            cardNumberProduct_Details.text = cardXXGen(cardNumber)
-        }
-
-        shippingAddress_productDetailsPage.setOnClickListener {
-            startActivity(Intent(this, PaymentMethodActivity::class.java))
-        }
-
 
         newProduct = arrayListOf()
 

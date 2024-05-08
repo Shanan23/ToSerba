@@ -18,6 +18,12 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/Theme.BuyNow">
+        <activity
+            android:name=".presentation.user.activity.EditProfileActivity"
+            android:exported="false" />
+        <activity
+            android:name=".presentation.user.activity.CheckoutActivity"
+            android:exported="false" />
         <activity android:name=".presentation.admin.activity.HomeAdminActivity" />
         <activity android:name=".presentation.seller.activity.HomeSellerActivity" />
         <activity android:name=".presentation.user.activity.PaymentMethodActivity" />

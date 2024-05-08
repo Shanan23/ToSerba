@@ -103,7 +103,7 @@ class CheckoutActivity : AppCompatActivity(), CourierAdapter.OnCourierClickListe
         }
 
         checkOutBagPage.setOnClickListener {
-            if (cbPolicy.isActivated) {
+            if (cbPolicy.isEnabled) {
                 val epochSeconds = System.currentTimeMillis() / 1000
                 val currentDate = Date()
                 val formatter = SimpleDateFormat("dd-MM-yyyy HH:mm:ss")
@@ -113,17 +113,18 @@ class CheckoutActivity : AppCompatActivity(), CourierAdapter.OnCourierClickListe
                 item?.forEach {
                     if (it.isCheck) {
                         it.isPay = true
-                        it.saleId = epochSeconds.toString()
+                        it.saleId = sale?.sId.toString()
                         cartViewModel.updateCart(it)
                     }
                 }
+
+
+                val intent = Intent(this@CheckoutActivity, HomeActivity::class.java)
+                startActivity(intent)
             } else {
                 toast("Silakan cek syarat dan ketentuan")
             }
 
-
-            val intent = Intent(this@CheckoutActivity, HomeActivity::class.java)
-            startActivity(intent)
         }
 
 

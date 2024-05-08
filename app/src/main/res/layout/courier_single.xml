@@ -15,8 +15,8 @@
 
         <ImageView
             android:id="@+id/imgCourier"
-            android:layout_width="20dp"
-            android:layout_height="20dp"
+            android:layout_width="40dp"
+            android:layout_height="40dp"
             android:layout_margin="10dp"
             android:src="@drawable/ic_admin_2"
             app:layout_constraintEnd_toEndOf="parent"

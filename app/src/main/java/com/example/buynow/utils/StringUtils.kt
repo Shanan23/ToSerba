@@ -1,9 +1,7 @@
 package com.example.buynow.utils
 
-import android.content.Context
 import com.example.buynow.data.model.Category
 import com.example.buynow.data.model.Courier
-import java.io.IOException
 
 class StringUtils {
 
@@ -42,9 +40,9 @@ class StringUtils {
         )
 
         val courierList = listOf(
-            Courier("Gojek", 14000, "10 - 15 Menit"),
-            Courier("Grab", 15000, "7 - 10 Menit"),
-            Courier("Maxim", 12000, "9 - 13 Menit")
+            Courier("Gojek", 14000, "10 - 15 Menit", "ic_logo_gojek"),
+            Courier("Grab", 15000, "7 - 10 Menit", "ic_logo_grab"),
+            Courier("Maxim", 12000, "9 - 13 Menit", "ic_logo_maxim")
         )
     }
 }

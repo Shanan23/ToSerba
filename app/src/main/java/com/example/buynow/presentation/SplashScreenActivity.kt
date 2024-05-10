@@ -135,6 +135,9 @@ class SplashScreenActivity : AppCompatActivity() {
 
                         itemViewModel.insertItem(person)
                     }
+
+                    checkUser()
+
                     // Now you can use your ArrayList (dataList) as needed
                     // For example, you can pass it to an adapter for RecyclerView
                 } else {
@@ -142,6 +145,5 @@ class SplashScreenActivity : AppCompatActivity() {
                 }
             })
 
-        checkUser()
     }
 }

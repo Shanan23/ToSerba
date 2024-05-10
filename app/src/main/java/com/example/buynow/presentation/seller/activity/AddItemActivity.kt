@@ -88,14 +88,17 @@ class AddItemActivity : AppCompatActivity() {
         }
 
         itemCollectionRef
-            .orderBy("id", Query.Direction.DESCENDING) // Assuming "id" is the field name for IDs
+            .orderBy("productId", Query.Direction.DESCENDING)
             .limit(1)
             .get()
             .addOnSuccessListener { documents ->
                 if (!documents.isEmpty) {
                     val maxIdDocument = documents.documents[0]
-                    maxId = maxIdDocument.getString("id")
-                        ?.toInt()!! // Assuming "id" is stored as a String
+                    Log.d("maxIdDocument", maxIdDocument.id)
+
+//                    val person = maxIdDocument.toObject(ItemEntity::class.java)
+
+                    maxId = maxIdDocument?.data?.get("productId")?.toString()?.toInt()!! + 1
 
                     // Do something with maxId
                 } else {
@@ -121,6 +124,7 @@ class AddItemActivity : AppCompatActivity() {
                 // Handle the case where one or more fields are empty
                 Toast.makeText(this, "Please fill in all fields", Toast.LENGTH_SHORT).show()
             } else {
+                Log.d("MaxId", (maxId).toString())
 
                 docData = hashMapOf()
                 docData["productName"] = productName
@@ -133,7 +137,7 @@ class AddItemActivity : AppCompatActivity() {
                 docData["productDisCount"] = ""
                 docData["productFav"] = ""
                 docData["productHave"] = ""
-                docData["productId"] = (maxId + 1).toString()
+                docData["productId"] = (maxId).toString()
                 docData["productNote"] = ""
                 docData["productRating"] = "3"
                 docData["productUserId"] = FirebaseUtils.firebaseAuth.uid.toString()
@@ -141,25 +145,7 @@ class AddItemActivity : AppCompatActivity() {
                 itemCollectionRef
                     .document(maxId.toString())
                     .set(docData)
-
-                itemCollectionRef.orderBy("name", Query.Direction.DESCENDING).get()
-                    .addOnCompleteListener(OnCompleteListener { task ->
-                        if (task.isSuccessful) {
-                            for (document in task.result!!) {
-                                // Convert each document to your data class and add to ArrayList
-                                val person = document.toObject(ItemEntity::class.java)
-
-                                Log.d("SQL Query: ", person.toString())
-
-                                itemViewModel.insertItem(person)
-
-                                uploadImage()
-
-                            }
-                        } else {
-                            // Handle errors here
-                        }
-                    })
+                uploadImage()
             }
         }
     }
@@ -191,10 +177,27 @@ class AddItemActivity : AppCompatActivity() {
                 })?.addOnCompleteListener { task ->
                     if (task.isSuccessful) {
                         val downloadUri = task.result
+                        Log.d("SQL MaxId", (maxId).toString())
+
                         addUploadRecordToDb(downloadUri.toString(), (maxId + 1).toString())
 
-                        // show save...
+                        itemCollectionRef.orderBy("name", Query.Direction.DESCENDING).get()
+                            .addOnCompleteListener(OnCompleteListener { task ->
+                                if (task.isSuccessful) {
+                                    for (document in task.result!!) {
+                                        // Convert each document to your data class and add to ArrayList
+                                        val person = document.toObject(ItemEntity::class.java)
 
+                                        Log.d("SQL Add Item: ", person.toString())
+
+                                        itemViewModel.insertItem(person)
+
+
+                                    }
+                                } else {
+                                    // Handle errors here
+                                }
+                            })
 
                     } else {
                         // Handle failures
@@ -219,7 +222,7 @@ class AddItemActivity : AppCompatActivity() {
             filePath = data.data
             try {
                 bitmap = MediaStore.Images.Media.getBitmap(contentResolver, filePath)
-
+                etImage.setText(filePath?.path)
             } catch (e: IOException) {
                 e.printStackTrace()
             }
@@ -230,6 +233,8 @@ class AddItemActivity : AppCompatActivity() {
         CoroutineScope(Dispatchers.IO).launch {
 
             try {
+
+                Log.d("productImage", uri);
 
                 itemCollectionRef.document(cartId)
                     .update("productImage", uri).await()
@@ -246,8 +251,7 @@ class AddItemActivity : AppCompatActivity() {
                         this@AddItemActivity,
                         "" + e.message.toString(),
                         Toast.LENGTH_SHORT
-                    )
-                        .show()
+                    ).show()
                 }
             }
         }

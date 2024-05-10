@@ -25,7 +25,7 @@
                 android:layout_marginTop="30dp"
                 android:layout_marginBottom="10dp"
                 android:gravity="center"
-                android:text="Checkout"
+                android:text="Edit Profil"
                 android:textColor="@color/mainText" />
         </LinearLayout>
 
@@ -34,7 +34,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_margin="10dp"
-            android:text="Edit Profil"
+            android:text="Nama"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@id/llTitle" />
 

@@ -154,7 +154,9 @@ class BagFragment : Fragment(), CartItemClickAdapter {
                 discount.toDouble(),
                 0.0,
                 System.currentTimeMillis().toString(),
-                countDetail.toString()
+                countDetail.toString(),
+                "",
+                ""
             )
 
             val intent = Intent(context, CheckoutActivity::class.java)

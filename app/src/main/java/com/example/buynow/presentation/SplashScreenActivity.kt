@@ -1,11 +1,15 @@
 package com.example.buynow.presentation
 
+import android.Manifest
 import android.annotation.SuppressLint
 import android.content.Intent
+import android.content.pm.PackageManager
 import android.os.Bundle
 import android.util.Log
 import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.app.AppCompatDelegate
+import androidx.core.app.ActivityCompat
+import androidx.core.content.ContextCompat
 import androidx.lifecycle.ViewModelProviders
 import com.example.buynow.R
 import com.example.buynow.data.local.room.item.ItemEntity
@@ -33,18 +37,71 @@ class SplashScreenActivity : AppCompatActivity() {
     lateinit var newProduct: ArrayList<Product>
     lateinit var saleProduct: ArrayList<Product>
 
+    companion object {
+        const val PERMISSION_REQUEST_CODE = 100
+    }
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_splash_screen)
 
         AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_NO)
 
+        checkPermission()
+    }
+
+    private fun checkPermission() {
+        // Check camera permission
+        val cameraPermissionGranted = ContextCompat.checkSelfPermission(
+            this,
+            Manifest.permission.CAMERA
+        ) == PackageManager.PERMISSION_GRANTED
+
+        // Check write external storage permission
+        val storagePermissionGranted = ContextCompat.checkSelfPermission(
+            this,
+            Manifest.permission.WRITE_EXTERNAL_STORAGE
+        ) == PackageManager.PERMISSION_GRANTED
+
+        if (cameraPermissionGranted && storagePermissionGranted) {
+            initializeAndSyncItems()
+        } else {
+            // Request permissions from the user or close the app
+            ActivityCompat.requestPermissions(
+                this,
+                arrayOf(
+                    Manifest.permission.CAMERA,
+                    Manifest.permission.WRITE_EXTERNAL_STORAGE
+                ),
+                PERMISSION_REQUEST_CODE
+            )
+        }
+    }
+
+    override fun onRequestPermissionsResult(
+        requestCode: Int,
+        permissions: Array<out String>,
+        grantResults: IntArray
+    ) {
+        super.onRequestPermissionsResult(requestCode, permissions, grantResults)
+        if (requestCode == PERMISSION_REQUEST_CODE) {
+            val allPermissionsGranted = grantResults.all { it == PackageManager.PERMISSION_GRANTED }
+            if (allPermissionsGranted) {
+                initializeAndSyncItems()
+            } else {
+                // Permissions not granted, close the app
+                checkPermission()
+
+            }
+        }
+    }
+
+    private fun initializeAndSyncItems() {
         coverProduct = arrayListOf()
         newProduct = arrayListOf()
         saleProduct = arrayListOf()
         itemViewModel = ViewModelProviders.of(this).get(ItemViewModel::class.java)
         CoroutineScope(Dispatchers.IO).launch { syncItem() }
-
     }
 
     private fun checkUser() {
@@ -62,7 +119,7 @@ class SplashScreenActivity : AppCompatActivity() {
     }
 
     private suspend fun syncItem() {
-            setCoverData()
+        setCoverData()
     }
 
     private suspend fun setCoverData() {
@@ -73,22 +130,6 @@ class SplashScreenActivity : AppCompatActivity() {
                     for (document in task.result!!) {
                         // Convert each document to your data class and add to ArrayList
                         val person = document.toObject(ItemEntity::class.java)
-//                        var itemEntity = ItemEntity(
-//                            person.productId.toString(),
-//                            person.productUserId,
-//                            person.productName,
-//                            person.productPrice.toInt(),
-//                            person.productImage,
-//                            person.productDes,
-//                            person.productRating.toDouble(),
-//                            person.productDisCount,
-//                            1,
-//                            false,
-//                            person.productBrand,
-//                            person.productCategory,
-//                            person.productNote
-//
-//                        )
 
                         Log.d("SQL Query: ", person.toString())
 
@@ -100,38 +141,6 @@ class SplashScreenActivity : AppCompatActivity() {
                     // Handle errors here
                 }
             })
-
-//        var coverD: List<Product> = gson.fromJson(jsonFileString, listCoverType)
-
-//        coverD.forEach { person ->
-//
-//            coverProduct.add(person)
-//            saleProduct.add(person)
-//
-//            var itemEntity = ItemEntity(
-//                person.productId.toString(),
-//                person.productUserId,
-//                person.productName,
-//                person.productPrice.toInt(),
-//                person.productImage,
-//                person.productDes,
-//                person.productRating.toDouble(),
-//                person.productDisCount,
-//                1,
-//                false,
-//                person.productBrand,
-//                person.productCategory,
-//                person.productNote
-//
-//            )
-//
-//            Log.d("SQL Query: ", itemEntity.toString())
-//
-//            itemViewModel.insertItem(itemEntity)
-//
-//            itemCollectionRef.document(person.productId.toString()).set(person).await()
-//
-//        }
 
         checkUser()
     }

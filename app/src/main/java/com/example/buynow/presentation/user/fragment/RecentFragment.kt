@@ -1,6 +1,7 @@
 package com.example.buynow.presentation.user.fragment
 
 import android.content.Context
+import android.content.Intent
 import android.graphics.Color
 import android.os.Bundle
 import android.view.LayoutInflater
@@ -17,9 +18,11 @@ import com.airbnb.lottie.LottieAnimationView
 import com.example.buynow.R
 import com.example.buynow.data.local.room.sale.SaleEntity
 import com.example.buynow.data.local.room.sale.SaleViewModel
+import com.example.buynow.presentation.user.activity.UploadPaymentActivity
 import com.example.buynow.presentation.user.adapter.SaleAdapter
 import com.example.buynow.presentation.user.adapter.SaleItemClickAdapter
 import com.google.firebase.auth.FirebaseAuth
+import com.google.gson.Gson
 
 
 class RecentFragment : Fragment(), SaleItemClickAdapter {
@@ -132,11 +135,17 @@ class RecentFragment : Fragment(), SaleItemClickAdapter {
     }
 
     override fun onItemDeleteClick(saleEntity: SaleEntity) {
+
     }
 
     override fun onItemUpdateClick(saleEntity: SaleEntity) {
-
+        goDetailsPage(saleEntity)
     }
 
 
+    private fun goDetailsPage(saleEntity: SaleEntity) {
+        val intent = Intent(requireContext(), UploadPaymentActivity::class.java)
+        intent.putExtra("saleEntity", Gson().toJson(saleEntity))
+        startActivity(intent)
+    }
 }

@@ -226,7 +226,7 @@
                 android:gravity="center"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="Empty Bag"
+                android:text="Keranjang Kosong"
                 android:textColor="@color/textAd"
                 android:fontFamily="@font/metropolis_semibold"
                 android:textSize="25dp"

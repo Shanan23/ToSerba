@@ -7,15 +7,15 @@
         android:icon="@drawable/ic_home"/>
     <item
         android:id="@+id/bagMenu"
-        android:title="Bag"
+        android:title="Keranjang"
         android:icon="@drawable/ic_bag"/>
     <item
         android:id="@+id/favMenu"
-        android:title="Favorites"
+        android:title="Riwayat"
         android:icon="@drawable/ic_recent"/>
     <item
         android:id="@+id/profileMenu"
-        android:title="Profile"
+        android:title="Profil"
         android:icon="@drawable/ic_profile"/>
 
 </menu>

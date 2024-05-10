@@ -55,7 +55,6 @@ class ProfileFragment : Fragment() {
     lateinit var profileName_profileFrag: TextView
     lateinit var profileEmail_profileFrag: TextView
 
-
     private val userCollectionRef = Firebase.firestore.collection("Users")
     val firebaseAuth: FirebaseAuth = FirebaseAuth.getInstance()
 

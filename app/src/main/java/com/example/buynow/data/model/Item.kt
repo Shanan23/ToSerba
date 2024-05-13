@@ -4,7 +4,7 @@ import androidx.room.ColumnInfo
 
 data class Item (
     var productId:Int = 0,
-    var productUserId:String = "GbJIzPEMOTVuBUrEMH1zoSHbwWC2",
+    var productUserId:String = "",
     var productName:String = "",
     var productPrice:Int = 0,
     var productStock:Int = 0,

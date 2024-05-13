@@ -101,7 +101,8 @@ class SplashScreenActivity : AppCompatActivity() {
         newProduct = arrayListOf()
         saleProduct = arrayListOf()
         itemViewModel = ViewModelProviders.of(this).get(ItemViewModel::class.java)
-        CoroutineScope(Dispatchers.IO).launch { syncItem() }
+        CoroutineScope(Dispatchers.IO).launch {                     checkUser()
+            checkUser() }
     }
 
     private fun checkUser() {

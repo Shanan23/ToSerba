@@ -13,5 +13,5 @@ data class Product (
     var productImage:String = "",
     var productCategory:String = "",
     var productNote:String = "",
-    var productUserId:String = "GbJIzPEMOTVuBUrEMH1zoSHbwWC2",
+    var productUserId:String = "",
 )

@@ -202,7 +202,7 @@ class LoginActivity : AppCompatActivity() {
                                         document.data["productId"].toString().toInt(),
                                         document.data["productUserId"].toString(),
                                         document.data["productName"].toString(),
-                                        document.data["productPrice"].toString().toInt(),
+                                        document.data["productPrice"].toString().replace(Regex("\\D"), "").toInt(),
                                         document.data["productImage"].toString(),
                                         document.data["productDes"].toString(),
                                         document.data["productRating"].toString()

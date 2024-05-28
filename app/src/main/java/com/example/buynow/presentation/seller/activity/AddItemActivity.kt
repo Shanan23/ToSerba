@@ -126,7 +126,7 @@ class AddItemActivity : AppCompatActivity() {
 
                 docData = hashMapOf()
                 docData["productName"] = productName
-                docData["productPrice"] = productPrice
+                docData["productPrice"] = productPrice.replace(Regex("\\D"), "")
                 docData["productCategory"] = productCategory
                 docData["productStock"] = productStock
                 docData["productImage"] = productImage

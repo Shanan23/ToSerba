@@ -16,6 +16,7 @@ import com.example.buynow.data.local.room.item.ItemEntity
 import com.example.buynow.data.local.room.item.ItemViewModel
 import com.example.buynow.data.model.Product
 import com.example.buynow.presentation.user.activity.HomeActivity
+import com.example.buynow.utils.Extensions.toast
 import com.example.buynow.utils.FirebaseUtils
 import com.google.android.gms.tasks.OnCompleteListener
 import com.google.firebase.auth.FirebaseAuth
@@ -101,8 +102,9 @@ class SplashScreenActivity : AppCompatActivity() {
         newProduct = arrayListOf()
         saleProduct = arrayListOf()
         itemViewModel = ViewModelProviders.of(this).get(ItemViewModel::class.java)
-        CoroutineScope(Dispatchers.IO).launch {                     checkUser()
-            checkUser() }
+        CoroutineScope(Dispatchers.IO).launch {
+            syncItem()
+        }
     }
 
     private fun checkUser() {
@@ -125,24 +127,39 @@ class SplashScreenActivity : AppCompatActivity() {
 
     private suspend fun setCoverData() {
 
-        itemCollectionRef.orderBy("name", Query.Direction.DESCENDING).get()
+        itemCollectionRef.orderBy("productId", Query.Direction.DESCENDING).get()
             .addOnCompleteListener(OnCompleteListener { task ->
                 if (task.isSuccessful) {
                     for (document in task.result!!) {
                         // Convert each document to your data class and add to ArrayList
-                        val person = document.toObject(ItemEntity::class.java)
+//                                    val person = document.toObject(ItemEntity::class.java)
+                        var itemEntity = ItemEntity(
+                            document.data["productId"].toString().toInt(),
+                            document.data["productUserId"].toString(),
+                            document.data["productName"].toString(),
+                            document.data["productPrice"].toString().toInt(),
+                            document.data["productImage"].toString(),
+                            document.data["productDes"].toString(),
+                            document.data["productRating"].toString()
+                                .toDouble(),
+                            document.data["productDisCount"].toString(),
+                            100,
+                            false,
+                            document.data["productBrand"].toString(),
+                            document.data["productCategory"].toString(),
+                            document.data["productNote"].toString()
+                        )
 
-                        Log.d("SQL Query: ", person.toString())
+                        Log.d("SQL Query: ", itemEntity.toString())
 
-                        itemViewModel.insertItem(person)
+                        itemViewModel.insertItem(itemEntity)
                     }
 
                     checkUser()
 
-                    // Now you can use your ArrayList (dataList) as needed
-                    // For example, you can pass it to an adapter for RecyclerView
                 } else {
                     // Handle errors here
+                    toast("Sync item failed")
                 }
             })
 

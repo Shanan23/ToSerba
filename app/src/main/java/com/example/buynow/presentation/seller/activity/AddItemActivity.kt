@@ -96,8 +96,6 @@ class AddItemActivity : AppCompatActivity() {
                     val maxIdDocument = documents.documents[0]
                     Log.d("maxIdDocument", maxIdDocument.id)
 
-//                    val person = maxIdDocument.toObject(ItemEntity::class.java)
-
                     maxId = maxIdDocument?.data?.get("productId")?.toString()?.toInt()!! + 1
 
                     // Do something with maxId
@@ -145,6 +143,7 @@ class AddItemActivity : AppCompatActivity() {
                 itemCollectionRef
                     .document(maxId.toString())
                     .set(docData)
+
                 uploadImage()
             }
         }
@@ -179,9 +178,9 @@ class AddItemActivity : AppCompatActivity() {
                         val downloadUri = task.result
                         Log.d("SQL MaxId", (maxId).toString())
 
-                        addUploadRecordToDb(downloadUri.toString(), (maxId + 1).toString())
+                        addUploadRecordToDb(downloadUri.toString(), (maxId).toString())
 
-                        itemCollectionRef.orderBy("name", Query.Direction.DESCENDING).get()
+                        itemCollectionRef.orderBy("productId", Query.Direction.DESCENDING).get()
                             .addOnCompleteListener(OnCompleteListener { task ->
                                 if (task.isSuccessful) {
                                     for (document in task.result!!) {

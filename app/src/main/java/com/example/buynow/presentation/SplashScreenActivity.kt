@@ -32,6 +32,7 @@ class SplashScreenActivity : AppCompatActivity() {
 
     private lateinit var itemViewModel: ItemViewModel
     private val itemCollectionRef = Firebase.firestore.collection("Items")
+    private val categoryCollectionRef = Firebase.firestore.collection("Categories")
     val firebaseAuth: FirebaseAuth = FirebaseAuth.getInstance()
 
     lateinit var coverProduct: ArrayList<Product>
@@ -126,42 +127,57 @@ class SplashScreenActivity : AppCompatActivity() {
     }
 
     private suspend fun setCoverData() {
-
-        itemCollectionRef.orderBy("productId", Query.Direction.DESCENDING).get()
-            .addOnCompleteListener(OnCompleteListener { task ->
-                if (task.isSuccessful) {
-                    for (document in task.result!!) {
-                        // Convert each document to your data class and add to ArrayList
+        if (FirebaseUtils.firebaseUser != null) {
+            itemCollectionRef.orderBy("productId", Query.Direction.DESCENDING).get()
+                .addOnCompleteListener(OnCompleteListener { task ->
+                    if (task.isSuccessful) {
+                        for (document in task.result!!) {
+                            // Convert each document to your data class and add to ArrayList
 //                                    val person = document.toObject(ItemEntity::class.java)
-                        var itemEntity = ItemEntity(
-                            document.data["productId"].toString().toInt(),
-                            document.data["productUserId"].toString(),
-                            document.data["productName"].toString(),
-                            document.data["productPrice"].toString().replace(Regex("\\D"), "").toInt(),
-                            document.data["productImage"].toString(),
-                            document.data["productDes"].toString(),
-                            document.data["productRating"].toString()
-                                .toDouble(),
-                            document.data["productDisCount"].toString(),
-                            100,
-                            false,
-                            document.data["productBrand"].toString(),
-                            document.data["productCategory"].toString(),
-                            document.data["productNote"].toString()
-                        )
+                            var stock = 0
+                            if (!document.data["productStock"].toString().equals("null")) {
+                                stock = document.data["productStock"].toString().toInt()
+                            }
+                            var itemEntity = ItemEntity(
+                                document.data["productId"].toString().toInt(),
+                                document.data["productUserId"].toString(),
+                                document.data["productName"].toString(),
+                                document.data["productPrice"].toString().replace(Regex("\\D"), "")
+                                    .toInt(),
+                                document.data["productImage"].toString(),
+                                document.data["productDes"].toString(),
+                                document.data["productRating"].toString()
+                                    .toDouble(),
+                                document.data["productDisCount"].toString(),
+                                stock,
+                                false,
+                                document.data["productBrand"].toString(),
+                                document.data["productCategory"].toString(),
+                                document.data["productNote"].toString()
+                            )
 
-                        Log.d("SQL Query: ", itemEntity.toString())
+                            Log.d("SQL Query: ", itemEntity.toString())
 
-                        itemViewModel.insertItem(itemEntity)
+                            itemViewModel.insertItem(itemEntity)
+
+                            var docData: HashMap<String, String> = hashMapOf()
+                            docData["productCategory"] =
+                                document.data["productCategory"].toString().uppercase()
+
+                            categoryCollectionRef
+                                .document(document.data["productCategory"].toString().uppercase())
+                                .set(docData)
+                        }
+
+                        checkUser()
+
+                    } else {
+                        // Handle errors here
+                        toast("Sync item failed")
                     }
-
-                    checkUser()
-
-                } else {
-                    // Handle errors here
-                    toast("Sync item failed")
-                }
-            })
-
+                })
+        } else {
+            checkUser()
+        }
     }
 }

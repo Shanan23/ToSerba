@@ -15,6 +15,7 @@ import com.bumptech.glide.Glide
 import com.example.buynow.R
 import com.example.buynow.R.drawable.bn
 import com.example.buynow.data.local.room.item.ItemEntity
+import com.example.buynow.presentation.seller.activity.AddItemActivity
 import com.example.buynow.presentation.user.activity.ProductDetailsActivity
 import java.text.DecimalFormat
 
@@ -47,10 +48,10 @@ class ProductSellerAdapter(private val productList: ArrayList<ItemEntity>, conte
             .into(holder.imgProduct)
 
         holder.icEdit.setOnClickListener {
-            goDetailsPage(product.pId.toInt())
+            goEditPage(product.pId.toInt())
         }
         holder.icDelete.setOnClickListener {
-            goDetailsPage(product.pId.toInt())
+            goDeletePage(product.pId.toInt())
         }
 
     }
@@ -69,9 +70,15 @@ class ProductSellerAdapter(private val productList: ArrayList<ItemEntity>, conte
         val icDelete: ImageView = itemView.findViewById(R.id.icDelete)
     }
 
-    private fun goDetailsPage(position: Int) {
-        val intent = Intent(ctx, ProductDetailsActivity::class.java)
-        intent.putExtra("ProductID", position)
+    private fun goEditPage(position: Int) {
+        val intent = Intent(ctx, AddItemActivity::class.java)
+        intent.putExtra("editId", position)
+        ctx.startActivity(intent)
+    }
+
+    private fun goDeletePage(position: Int) {
+        val intent = Intent(ctx, AddItemActivity::class.java)
+        intent.putExtra("deleteId", position)
         ctx.startActivity(intent)
     }
 

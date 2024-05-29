@@ -2,6 +2,7 @@ package com.example.buynow.presentation.user.fragment
 
 
 import android.os.Bundle
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -25,7 +26,7 @@ import com.example.buynow.data.local.room.item.ItemViewModel
 import com.example.buynow.data.model.Category
 import com.example.buynow.presentation.user.adapter.CategoryNameAdapter
 import com.example.buynow.presentation.user.adapter.ProductAdapter
-import com.example.buynow.utils.StringUtils.Companion.cateList
+import com.google.android.gms.tasks.OnCompleteListener
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.firestore.ktx.firestore
 import com.google.firebase.ktx.Firebase
@@ -57,6 +58,7 @@ class HomeFragment : Fragment(), CategoryNameAdapter.OnCategoryClickListener {
 
     val firebaseAuth: FirebaseAuth = FirebaseAuth.getInstance()
     private val userCollectionRef = Firebase.firestore.collection("Users")
+    private val categoryCollectionRef = Firebase.firestore.collection("Categories")
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -80,8 +82,26 @@ class HomeFragment : Fragment(), CategoryNameAdapter.OnCategoryClickListener {
 
         categoryView.layoutManager =
             LinearLayoutManager(requireContext(), LinearLayoutManager.HORIZONTAL, false)
+
+        val cateList: MutableList<Category> = mutableListOf()
+
+
         var categoryAdapter = CategoryNameAdapter(cateList)
         categoryView.adapter = categoryAdapter
+
+
+        categoryCollectionRef.get()
+            .addOnCompleteListener(OnCompleteListener { task ->
+                if (task.isSuccessful) {
+                    for (document in task.result!!) {
+                        Log.d("document", document.id)
+                        var category = Category(document.id, "")
+                        cateList.add(category)
+                    }
+
+                    categoryAdapter.notifyDataSetChanged()
+                }
+            })
 
         categoryAdapter.setOnCategoryClickListener(this)
 

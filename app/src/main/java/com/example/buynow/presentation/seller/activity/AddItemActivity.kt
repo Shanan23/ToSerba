@@ -8,6 +8,7 @@ import android.os.Bundle
 import android.provider.MediaStore
 import android.util.Log
 import android.view.View
+import android.view.WindowManager
 import android.widget.Button
 import android.widget.EditText
 import android.widget.LinearLayout
@@ -15,6 +16,7 @@ import android.widget.PopupMenu
 import android.widget.TextView
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
+import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProviders
 import com.example.buynow.R
 import com.example.buynow.data.local.room.item.ItemEntity
@@ -59,13 +61,55 @@ class AddItemActivity : AppCompatActivity() {
 
     private val userCollectionRef = Firebase.firestore.collection("Users")
     private val itemCollectionRef = Firebase.firestore.collection("Items")
+    private val categoryCollectionRef = Firebase.firestore.collection("Categories")
     private val PICK_IMAGE_REQUEST = 71
     lateinit var product: Product
     private var filePath: Uri? = null
+    var editId: Int = -1
+    var deleteId: Int = -1
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_add_item)
+
+        window?.addFlags(WindowManager.LayoutParams.FLAG_LAYOUT_NO_LIMITS)
+
+        editId = intent.getIntExtra("editId", -1)
+        deleteId = intent.getIntExtra("deleteId", -1)
+
+        itemViewModel = ViewModelProviders.of(this).get(ItemViewModel::class.java)
+        setProductData()
+
+        if (editId != -1) {
+            maxId = editId
+
+            itemViewModel.getByItemID(editId.toString())
+        } else if (deleteId != -1) {
+            maxId = editId
+            itemCollectionRef.document(editId.toString())
+                .delete()
+        } else {
+            itemCollectionRef
+                .orderBy("productId", Query.Direction.DESCENDING)
+                .limit(1)
+                .get()
+                .addOnSuccessListener { documents ->
+                    if (!documents.isEmpty) {
+                        val maxIdDocument = documents.documents[0]
+                        Log.d("maxIdDocument", maxIdDocument.id)
+
+                        maxId = maxIdDocument?.data?.get("productId")?.toString()?.toInt()!! + 1
+
+                        // Do something with maxId
+                    } else {
+                        // Collection is empty
+                    }
+                }
+                .addOnFailureListener { exception ->
+                    // Handle failures
+                    exception.printStackTrace()
+                }
+        }
 
         itemViewModel = ViewModelProviders.of(this).get(ItemViewModel::class.java)
 
@@ -87,26 +131,7 @@ class AddItemActivity : AppCompatActivity() {
             popupMenu.show()
         }
 
-        itemCollectionRef
-            .orderBy("productId", Query.Direction.DESCENDING)
-            .limit(1)
-            .get()
-            .addOnSuccessListener { documents ->
-                if (!documents.isEmpty) {
-                    val maxIdDocument = documents.documents[0]
-                    Log.d("maxIdDocument", maxIdDocument.id)
 
-                    maxId = maxIdDocument?.data?.get("productId")?.toString()?.toInt()!! + 1
-
-                    // Do something with maxId
-                } else {
-                    // Collection is empty
-                }
-            }
-            .addOnFailureListener { exception ->
-                // Handle failures
-                exception.printStackTrace()
-            }
 
         btnSave.setOnClickListener {
             val productName = etName.text.toString().trim()
@@ -144,9 +169,30 @@ class AddItemActivity : AppCompatActivity() {
                     .document(maxId.toString())
                     .set(docData)
 
+
+                var docData: HashMap<String, String> = hashMapOf()
+                docData["productCategory"] = productCategory.uppercase()
+
+
+                categoryCollectionRef
+                    .document(productCategory.uppercase())
+                    .set(docData)
+
                 uploadImage()
             }
         }
+    }
+
+    private fun setProductData() {
+        // Observe changes in item LiveData
+        itemViewModel.item.observe(this, Observer { itemSelected ->
+            // Update UI with item data
+            etName.setText(itemSelected.name)
+            etPrice.setText(itemSelected.price.toString())
+            etCategory.setText(itemSelected.category)
+            etStock.setText(itemSelected.stock.toString())
+            etImage.setText(itemSelected.image)
+        })
     }
 
     private fun launchGallery() {
@@ -185,12 +231,35 @@ class AddItemActivity : AppCompatActivity() {
                                 if (task.isSuccessful) {
                                     for (document in task.result!!) {
                                         // Convert each document to your data class and add to ArrayList
-                                        val person = document.toObject(ItemEntity::class.java)
+                                        // Convert each document to your data class and add to ArrayList
+                                        var itemEntity = ItemEntity(
+                                            document.data["productId"].toString().toInt(),
+                                            document.data["productUserId"].toString(),
+                                            document.data["productName"].toString(),
+                                            document.data["productPrice"].toString().replace(Regex("\\D"), "")
+                                                .toInt(),
+                                            document.data["productImage"].toString(),
+                                            document.data["productDes"].toString(),
+                                            document.data["productRating"].toString()
+                                                .toDouble(),
+                                            document.data["productDisCount"].toString(),
+                                            Integer.parseInt(document.data["productStock"].toString()),
+                                            false,
+                                            document.data["productBrand"].toString(),
+                                            document.data["productCategory"].toString(),
+                                            document.data["productNote"].toString()
+                                        )
 
-                                        Log.d("SQL Add Item: ", person.toString())
+                                        Log.d("SQL Query: ", itemEntity.toString())
 
-                                        itemViewModel.insertItem(person)
+                                        itemViewModel.insertItem(itemEntity)
 
+                                        var docData: HashMap<String, String> = hashMapOf()
+                                        docData["productCategory"] = document.data["productCategory"].toString().uppercase()
+
+                                        categoryCollectionRef
+                                            .document(document.data["productCategory"].toString().uppercase())
+                                            .set(docData)
 
                                     }
                                 } else {
@@ -205,8 +274,47 @@ class AddItemActivity : AppCompatActivity() {
 
                 }
         } else {
+//            Toast.makeText(this, "Please Upload an Image", Toast.LENGTH_SHORT).show()
+            itemCollectionRef.orderBy("productId", Query.Direction.DESCENDING).get()
+                .addOnCompleteListener(OnCompleteListener { task ->
+                    if (task.isSuccessful) {
+                        for (document in task.result!!) {
+                            // Convert each document to your data class and add to ArrayList
+                            var itemEntity = ItemEntity(
+                                document.data["productId"].toString().toInt(),
+                                document.data["productUserId"].toString(),
+                                document.data["productName"].toString(),
+                                document.data["productPrice"].toString().replace(Regex("\\D"), "")
+                                    .toInt(),
+                                document.data["productImage"].toString(),
+                                document.data["productDes"].toString(),
+                                document.data["productRating"].toString()
+                                    .toDouble(),
+                                document.data["productDisCount"].toString(),
+                                Integer.parseInt(document.data["productStock"].toString()),
+                                false,
+                                document.data["productBrand"].toString(),
+                                document.data["productCategory"].toString(),
+                                document.data["productNote"].toString()
+                            )
 
-            Toast.makeText(this, "Please Upload an Image", Toast.LENGTH_SHORT).show()
+                            Log.d("SQL Query: ", itemEntity.toString())
+
+                            itemViewModel.insertItem(itemEntity)
+
+                            var docData: HashMap<String, String> = hashMapOf()
+                            docData["productCategory"] = document.data["productCategory"].toString().uppercase()
+
+                            categoryCollectionRef
+                                .document(document.data["productCategory"].toString().uppercase())
+                                .set(docData)
+                        }
+                    } else {
+                        // Handle errors here
+                    }
+                })
+
+            finish()
         }
     }
 
@@ -251,6 +359,7 @@ class AddItemActivity : AppCompatActivity() {
                         "" + e.message.toString(),
                         Toast.LENGTH_SHORT
                     ).show()
+                    finish()
                 }
             }
         }

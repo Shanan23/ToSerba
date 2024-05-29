@@ -37,6 +37,7 @@ class LoginActivity : AppCompatActivity() {
     lateinit var emailError: TextView
     lateinit var passwordError: TextView
     private val itemCollectionRef = Firebase.firestore.collection("Items")
+    private val categoryCollectionRef = Firebase.firestore.collection("Categories")
     private lateinit var itemViewModel: ItemViewModel
 
 
@@ -202,13 +203,14 @@ class LoginActivity : AppCompatActivity() {
                                         document.data["productId"].toString().toInt(),
                                         document.data["productUserId"].toString(),
                                         document.data["productName"].toString(),
-                                        document.data["productPrice"].toString().replace(Regex("\\D"), "").toInt(),
+                                        document.data["productPrice"].toString()
+                                            .replace(Regex("\\D"), "").toInt(),
                                         document.data["productImage"].toString(),
                                         document.data["productDes"].toString(),
                                         document.data["productRating"].toString()
                                             .toDouble(),
                                         document.data["productDisCount"].toString(),
-                                        100,
+                                        Integer.parseInt(document.data["productStock"].toString()),
                                         false,
                                         document.data["productBrand"].toString(),
                                         document.data["productCategory"].toString(),
@@ -218,6 +220,14 @@ class LoginActivity : AppCompatActivity() {
                                     Log.d("SQL Query: ", itemEntity.toString())
 
                                     itemViewModel.insertItem(itemEntity)
+
+
+                                    var docData: HashMap<String, String> = hashMapOf()
+                                    docData["productCategory"] = document.data["productCategory"].toString().uppercase()
+
+                                    categoryCollectionRef
+                                        .document(document.data["productCategory"].toString().uppercase())
+                                        .set(docData)
                                 }
 
                                 loadingDialog.dismissDialog()
